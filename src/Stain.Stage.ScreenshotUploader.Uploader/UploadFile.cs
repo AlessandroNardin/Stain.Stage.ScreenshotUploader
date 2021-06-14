@@ -5,28 +5,22 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Stain.Stage.ScreenshotUploader.Uploader {
-    public class UploadFile {
-        public string DestinationURL
-        {
-            get => DestinationURL;
-            set
-            {
-                DestinationURL = value;
-            }
-        }
-        Image ImageToUpload;
+    public class UploadFile : IDisposable {
+        private HttpClient ApiClient { get; } = new HttpClient();
 
-        public void ImportImage(string Path) {
-            ImageToUpload = Image.FromFile(Path);
+        public Image ImportImage(string path) {
+            return Image.FromFile(path);
         }
         
-        public string ConvertImageToBase64() {
-            return Convert.ToBase64String(ImageToByteArray(ImageToUpload));
+        public string ConvertImageToBase64(Image image) {
+            return Convert.ToBase64String(ImageToByteArray(image));
         }
+
         public byte[] ImageToByteArray(Image ImageIn) {
             using(var ms = new MemoryStream()) {
                 ImageIn.Save(ms, ImageIn.RawFormat);
@@ -34,44 +28,48 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
             }
         }
 
-        
+
         public void UploadImage(string ImagePath) {
 
-            ImportImage(ImagePath);
-            ConvertImageToBase64();
+            Image image = ImportImage(ImagePath);
 
-            WebRequest wb = WebRequest.Create(new Uri("http://imgur.com/api/upload.xml"));
-            wb.ContentType = "application/x-www-form-urlencoded";
-            wb.Method = "POST";
-            Console.WriteLine(wb.Timeout);
-            Console.WriteLine(ImageToByteArray(ImageToUpload).Length);
-            string parameters = "image=" + ConvertImageToBase64();
+            Dictionary<string, string> formContent = new() {
+                { "image", ConvertImageToBase64(image) },
+                { "type", "base64" },
+            };
+            FormUrlEncodedContent content = new(formContent);
 
+            HttpRequestMessage request = new();
+            request.Content = content;
+            request.Headers.Add("Authorization", $"Client-ID {ApiConstants.ImgurClientId}");
 
-            Console.WriteLine("parameters: " + parameters.Length);
-            System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
-            byte[] bytes = encoding.GetBytes(parameters);
-
-            try { // send the Post
-                wb.ContentLength = bytes.Length;   //Count bytes to send
-
-                using Stream requestStream = wb.GetRequestStream();
-                requestStream.Write(bytes, 0, bytes.Length);
-            } catch(WebException ex) {
-                Console.WriteLine(ex.Message);
-                
+            HttpResponseMessage response = GetResult(ApiClient.PostAsync("https://api.imgur.com/3/upload", content));
+            if(response == null) {
+                return;
             }
 
-            try { // get the response
-                WebResponse webResponse = wb.GetResponse();
-
-                StreamReader sr = new StreamReader(webResponse.GetResponseStream());
-                Console.WriteLine(sr.ReadToEnd().Trim());
-            } catch(WebException ex) {
-                Console.WriteLine(ex.Message, "HttpPost: Response error");
-            }
-
+            Console.WriteLine(GetResult(response.Content.ReadAsStringAsync()));
         }
 
+        public void Dispose() {
+            ApiClient.Dispose();
+        }
+
+        private static T GetResult<T>(Task<T> input) {
+            T result = default;
+            input.Wait();
+
+            try {
+                result = input.Result;
+            } catch(AggregateException e) {
+                Console.WriteLine($"Task Cancelled: {e.Message}");
+            } catch(Exception e) {
+                Console.WriteLine($"Error occurred: {e.Message}");
+                Exception inner = e.InnerException;
+                Console.WriteLine($"Inner Exception Error: {inner?.Message ?? "<NULL>"}");
+            }
+
+            return result;
+        }
     }
 }

@@ -7,9 +7,9 @@ namespace Stain.Stage.ScreenshotUploader {
 
             Console.WriteLine("START");
 
-            UploadFile uploader = new UploadFile();
-
+            using UploadFile uploader = new();
             uploader.UploadImage("C:\\Users\\utente.elettrico\\Desktop\\Test.png");
+
             Console.WriteLine("START");
         }
      }
