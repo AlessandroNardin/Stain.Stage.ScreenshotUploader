@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 
 namespace Stain.Stage.ScreenshotUploader.Screenshot {
-    public class ScreenCapture {
+    public class Screenshot {
 
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
         static extern IntPtr GetConsoleWindow();
@@ -20,7 +20,7 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
         /// <summary>
         /// Returns a bitmap object containing a screenshot of the entire screen.
         /// </summary>
-        public static Bitmap Screenshot(){
+        public static Bitmap Capture(){
 
             // Creates the default points necessary to determine the screen size, and the starting point on the destination image.
             Point ImageDestinationPoint = new Point(0, 0);
@@ -61,7 +61,7 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
         /// </summary>
         /// <param name="UpperLeftCorner">Upper left corner of the part of the screen to capture.</param>
         /// <param name="BottomRightCorner">Bottom right corner of the part of the screen to capture.</param>
-        public static Bitmap Screenshot(Point UpperLeftCorner, Point BottomRightCorner) {
+        public static Bitmap Capture(Point UpperLeftCorner, Point BottomRightCorner) {
 
             // Creates the default point necessary to determine the starting point on the destination image.
             Point ImageDestinationPoint = new Point(0, 0);
