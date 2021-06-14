@@ -4,4 +4,9 @@
     <PropertyGroup>
         <Description>Library responsible for taking screenshots.</Description>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="PresentationFramework" />
+      <Reference Include="System.Windows.Forms" />
+    </ItemGroup>
 </Project>
