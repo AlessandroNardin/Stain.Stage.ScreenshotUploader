@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\Stain.Stage.ScreenshotUploader.props" />
+
+    <PropertyGroup>
+        <Description>Library responsible for uploading screenshots.</Description>
+    </PropertyGroup>
+</Project>

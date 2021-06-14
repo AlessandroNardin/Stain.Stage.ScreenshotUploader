@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\Stain.Stage.ScreenshotUploader.props" />
+
+    <PropertyGroup>
+        <Description>CLI for Screenshot Uploader</Description>
+        <NeutralLanguage>en</NeutralLanguage>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <AssemblyName>screenshot_uploader</AssemblyName>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommandLineParser" Version="2.7.82" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include=".\..\Stain.Stage.ScreenshotUploader.Screenshot\Stain.Stage.ScreenshotUploader.Screenshot.csproj" />
+        <ProjectReference Include=".\..\Stain.Stage.ScreenshotUploader.Uploader\Stain.Stage.ScreenshotUploader.Uploader.csproj" />
+    </ItemGroup>
+</Project>

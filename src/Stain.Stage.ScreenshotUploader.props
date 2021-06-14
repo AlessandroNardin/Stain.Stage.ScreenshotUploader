@@ -1,0 +1,30 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <VersionPrefix>0.0.1</VersionPrefix>
+        <VersionSuffix>dogfood</VersionSuffix>
+
+        <Version Condition="'$(Configuration)' == 'Debug'">$(VersionPrefix)-$(VersionSuffix)</Version>
+        <Version Condition="'$(Configuration)' == 'Release'">$(VersionPrefix)</Version>
+
+        <Company>STAIN Engineering (http://stain.tn.it)</Company>
+        <Authors>HellPie &lt;https://hellpie.dev&gt;</Authors>
+        <Copyright>Copyright © 2020 STAIN Engineering (http://stain.tn.it)</Copyright>
+        <Product>Screenshot Uploader</Product>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolsPackageFormat>snupkg</SymbolsPackageFormat>
+        <IncludeSource>true</IncludeSource>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <WarningsAsErrors>true</WarningsAsErrors>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+</Project>
