@@ -20,7 +20,7 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
         /// <summary>
         /// Returns a bitmap object containing a screenshot of the entire screen.
         /// </summary>
-        public static Bitmap Capture(){
+        public static string Capture(){
 
             // Creates the default points necessary to determine the screen size, and the starting point on the destination image.
             Point ImageDestinationPoint = new Point(0, 0);
@@ -48,9 +48,11 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
             string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{Guid.NewGuid()}.jpg");
             bm.Save(@path);
 
-            return null;
+            return path;
 #else
-            return bm;
+            string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.jpg");
+            bm.Save(@path);
+            return path;
 #endif
         }
 
@@ -61,7 +63,7 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
         /// </summary>
         /// <param name="UpperLeftCorner">Upper left corner of the part of the screen to capture.</param>
         /// <param name="BottomRightCorner">Bottom right corner of the part of the screen to capture.</param>
-        public static Bitmap Capture(Point UpperLeftCorner, Point BottomRightCorner) {
+        public static string Capture(Point UpperLeftCorner, Point BottomRightCorner) {
 
             // Creates the default point necessary to determine the starting point on the destination image.
             Point ImageDestinationPoint = new Point(0, 0);
@@ -87,9 +89,11 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
             string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{Guid.NewGuid()}.jpg");
             bm.Save(@path);
 
-            return null;
+            return path;
 #else
-            return bm;
+            string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.jpg");
+            bm.Save(@path);
+            return path;
 #endif
         }
 
