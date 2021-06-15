@@ -27,10 +27,8 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
         }
 
 
-        public bool TryUploadImage(string imagePath, out UploadData data) {
+        public bool TryUploadImage(Bitmap image, out UploadData data) {
             data = default;
-
-            Image image = ImportImage(imagePath);
 
             Dictionary<string, string> formContent = new() {
                 { "image", ConvertImageToBase64(image) },
