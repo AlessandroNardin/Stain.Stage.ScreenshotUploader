@@ -8,13 +8,15 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
     /// A Class containing two methods which allows to capture the entire screen or just one part of it
     /// </summary>
     public class Screenshot {
-        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
-        static extern IntPtr GetConsoleWindow();
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
         const int SwHide = 0;
         const int SwShow = 5;
 
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        
         /// <summary>
         /// Returns a bitmap object containing a screenshot of the entire screen.
         /// </summary>
