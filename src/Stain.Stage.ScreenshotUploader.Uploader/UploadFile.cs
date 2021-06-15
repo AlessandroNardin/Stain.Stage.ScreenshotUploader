@@ -8,12 +8,9 @@ using System.Threading.Tasks;
 
 
 namespace Stain.Stage.ScreenshotUploader.Uploader {
+    
     public class UploadFile : IDisposable {
         private HttpClient ApiClient { get; } = new HttpClient();
-
-        public Image ImportImage(string path) {
-            return Image.FromFile(path);
-        }
         
         public string ConvertImageToBase64(Image image) {
             return Convert.ToBase64String(ImageToByteArray(image));
@@ -26,7 +23,7 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
             }
         }
 
-
+        //method to call to upload an image
         public bool TryUploadImage(Bitmap image, out UploadData data) {
             data = default;
 

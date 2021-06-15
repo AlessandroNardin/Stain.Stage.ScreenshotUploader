@@ -1,4 +1,5 @@
 namespace Stain.Stage.ScreenshotUploader.Uploader {
+    //this class contanis the parameters of data when the upload is successfull
     public class UploadData {
         public string Id { get; set; }
         public string DeleteHash { get; set; }
