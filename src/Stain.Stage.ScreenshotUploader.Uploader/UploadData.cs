@@ -3,10 +3,10 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
     public class UploadData {
         public string Id { get; set; }
         public string DeleteHash { get; set; }
-        public string Account_id { get; set; }
-        public string Account_url { get; set; }
-        public string Ad_type { get; set; }
-        public string Ad_url { get; set; }
+        public string AccountId { get; set; }
+        public string AccountUrl { get; set; }
+        public string AdType { get; set; }
+        public string AdUrl { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Name { get; set; }
@@ -20,10 +20,10 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
         public int BandWidth { get; set; }
         public bool Animated { get; set; }
         public bool Favorite { get; set; }
-        public bool In_gallery { get; set; }
-        public bool In_most_viral { get; set; }
-        public bool Has_sound { get; set; }
-        public string Is_ad { get; set; }
+        public bool InGallery { get; set; }
+        public bool InMostViral { get; set; }
+        public bool HasSound { get; set; }
+        public string IsAd { get; set; }
         public string Nsfw { get; set; }
         public string Link { get; set; }
         public string DateTime { get; set; }
@@ -33,10 +33,10 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
         public string ToString() {
             return $"Id : {Id}," +
                 $" DeleteHash : {DeleteHash}," +
-                $" Account_id : {Account_id}," +
-                $" Account_url : {Account_url}," +
-                $" Ad_type : {Ad_type}," +
-                $" Ad_url : {Ad_url}," +
+                $" Account_id : {AccountId}," +
+                $" Account_url : {AccountUrl}," +
+                $" Ad_type : {AdType}," +
+                $" Ad_url : {AdUrl}," +
                 $" Title : {Title}," +
                 $" Description : {Description}," +
                 $" Name : {Name}," +
@@ -50,10 +50,10 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
                 $" Bandwidth : {BandWidth}," +
                 $" Animated : {Animated}," +
                 $" Favorite : {Favorite}," +
-                $" In_gallery : {In_gallery}," +
-                $" In_most_viral : {In_most_viral}," +
-                $" Has_sound : {Has_sound}," +
-                $" Is_ad : {Is_ad}," +
+                $" In_gallery : {InGallery}," +
+                $" In_most_viral : {InMostViral}," +
+                $" Has_sound : {HasSound}," +
+                $" Is_ad : {IsAd}," +
                 $" Nsfw : {Nsfw}," +
                 $" Link : {Link}," +
                 $" DateTime : {DateTime}," +
