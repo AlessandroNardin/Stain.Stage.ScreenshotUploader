@@ -1,18 +1,11 @@
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web.Script.Serialization;
+
 
 namespace Stain.Stage.ScreenshotUploader.Uploader {
     public class UploadFile : IDisposable {
@@ -26,17 +19,18 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
             return Convert.ToBase64String(ImageToByteArray(image));
         }
 
-        public byte[] ImageToByteArray(Image ImageIn) {
+        public byte[] ImageToByteArray(Image imageIn) {
             using(var ms = new MemoryStream()) {
-                ImageIn.Save(ms, ImageIn.RawFormat);
+                imageIn.Save(ms, imageIn.RawFormat);
                 return ms.ToArray();
             }
         }
 
 
-        public void UploadImage(string ImagePath) {
+        public bool TryUploadImage(string imagePath, out UploadData data) {
+            data = default;
 
-            Image image = ImportImage(ImagePath);
+            Image image = ImportImage(imagePath);
 
             Dictionary<string, string> formContent = new() {
                 { "image", ConvertImageToBase64(image) },
@@ -50,19 +44,25 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
 
             HttpResponseMessage response = GetResult(ApiClient.PostAsync("https://api.imgur.com/3/upload", content));
             if(response == null) {
-                return;
+                return false;
             }
 
             Console.WriteLine(GetResult(response.Content.ReadAsStringAsync()));
 
+            JObject search = JObject.Parse(GetResult(response.Content.ReadAsStringAsync()));
 
-            JObject googleSearch = JObject.Parse(GetResult(response.Content.ReadAsStringAsync()));
 
-            // get JSON result objects into a list
-            ErrorData error = googleSearch["data"].ToObject<ErrorData>();
-
-            // serialize JSON results into .NET objects
-            Console.WriteLine(error.ToString());
+            if((bool)search["success"]) {
+                UploadData uData = search["data"].ToObject<UploadData>();
+                Console.WriteLine(uData.ToString());
+                data = uData;
+                return true;
+            } else {
+                ErrorData error = search["data"].ToObject<ErrorData>();
+                Console.WriteLine(error.ToString());
+                return false;
+            }
+            
         }
 
 

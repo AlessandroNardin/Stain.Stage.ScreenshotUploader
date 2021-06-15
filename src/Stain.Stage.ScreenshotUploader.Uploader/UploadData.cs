@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Stain.Stage.ScreenshotUploader.Uploader {
-    class UploadData {
+    public class UploadData {
         public string Id { get; set; }
         public string DeleteHash { get; set; }
         public string Account_id { get; set; }
@@ -36,7 +30,33 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
         public string Hls { get; set; }
 
         public string ToString() {
-            return $"Id : {Id}, \nDeleteHash : {DeleteHash}, \nAccount_id : {Account_id}, \nAccount_url : {Account_url}, \nAd_type : {Ad_type}, \nAd_url : {Ad_url}, \nTitle : {Title}, \nDescription : {Description}, \nName : {Name}, \nType : {Type}, \nWidth : {Width}, \nHeight : {Height}, \nSize : {Size}, \nViews : {Views}, \nSection : {Section}, \nVote : {Vote}, \nBandwidth : {BandWidth}, \nAnimated : {Animated}, \nFavorite : {Favorite}, \nIn_gallery : {In_gallery}, \nIn_most_viral : {In_most_viral}, \nHas_sound : {Has_sound}, \nIs_ad : {Is_ad}, \nNsfw : {Nsfw}, \nLink : {Link}, \nDateTime : {DateTime}, \nMp4 : {Mp4}, \nls : {Hls}";
+            return $"Id : {Id}, \nDeleteHash : {DeleteHash}," +
+                $" \nAccount_id : {Account_id}," +
+                $" \nAccount_url : {Account_url}," +
+                $" \nAd_type : {Ad_type}," +
+                $" \nAd_url : {Ad_url}," +
+                $" \nTitle : {Title}," +
+                $" \nDescription : {Description}," +
+                $" \nName : {Name}," +
+                $" \nType : {Type}," +
+                $" \nWidth : {Width}," +
+                $" \nHeight : {Height}," +
+                $" \nSize : {Size}," +
+                $" \nViews : {Views}," +
+                $" \nSection : {Section}," +
+                $" \nVote : {Vote}," +
+                $" \nBandwidth : {BandWidth}," +
+                $" \nAnimated : {Animated}," +
+                $" \nFavorite : {Favorite}," +
+                $" \nIn_gallery : {In_gallery}," +
+                $" \nIn_most_viral : {In_most_viral}," +
+                $" \nHas_sound : {Has_sound}," +
+                $" \nIs_ad : {Is_ad}," +
+                $" \nNsfw : {Nsfw}," +
+                $" \nLink : {Link}," +
+                $" \nDateTime : {DateTime}," +
+                $" \nMp4 : {Mp4}," +
+                $" \nls : {Hls}";
         }
     }
 }
