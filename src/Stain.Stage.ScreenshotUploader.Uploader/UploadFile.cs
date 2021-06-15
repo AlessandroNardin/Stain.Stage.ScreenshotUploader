@@ -46,7 +46,6 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
 
             JObject search = JObject.Parse(GetResult(response.Content.ReadAsStringAsync()));
 
-
             if((bool)search["success"]) {
                 UploadData uData = search["data"].ToObject<UploadData>();
                 Console.WriteLine(uData.ToString());
@@ -59,7 +58,6 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
             }
             
         }
-
 
         public void Dispose() {
             ApiClient.Dispose();

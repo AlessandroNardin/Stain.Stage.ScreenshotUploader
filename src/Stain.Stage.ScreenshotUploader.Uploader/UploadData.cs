@@ -31,33 +31,34 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
         public string Hls { get; set; }
 
         public string ToString() {
-            return $"Id : {Id}, \nDeleteHash : {DeleteHash}," +
-                $" \nAccount_id : {Account_id}," +
-                $" \nAccount_url : {Account_url}," +
-                $" \nAd_type : {Ad_type}," +
-                $" \nAd_url : {Ad_url}," +
-                $" \nTitle : {Title}," +
-                $" \nDescription : {Description}," +
-                $" \nName : {Name}," +
-                $" \nType : {Type}," +
-                $" \nWidth : {Width}," +
-                $" \nHeight : {Height}," +
-                $" \nSize : {Size}," +
-                $" \nViews : {Views}," +
-                $" \nSection : {Section}," +
-                $" \nVote : {Vote}," +
-                $" \nBandwidth : {BandWidth}," +
-                $" \nAnimated : {Animated}," +
-                $" \nFavorite : {Favorite}," +
-                $" \nIn_gallery : {In_gallery}," +
-                $" \nIn_most_viral : {In_most_viral}," +
-                $" \nHas_sound : {Has_sound}," +
-                $" \nIs_ad : {Is_ad}," +
-                $" \nNsfw : {Nsfw}," +
-                $" \nLink : {Link}," +
-                $" \nDateTime : {DateTime}," +
-                $" \nMp4 : {Mp4}," +
-                $" \nls : {Hls}";
+            return $"Id : {Id}," +
+                $" DeleteHash : {DeleteHash}," +
+                $" Account_id : {Account_id}," +
+                $" Account_url : {Account_url}," +
+                $" Ad_type : {Ad_type}," +
+                $" Ad_url : {Ad_url}," +
+                $" Title : {Title}," +
+                $" Description : {Description}," +
+                $" Name : {Name}," +
+                $" Type : {Type}," +
+                $" Width : {Width}," +
+                $" Height : {Height}," +
+                $" Size : {Size}," +
+                $" Views : {Views}," +
+                $" Section : {Section}," +
+                $" Vote : {Vote}," +
+                $" Bandwidth : {BandWidth}," +
+                $" Animated : {Animated}," +
+                $" Favorite : {Favorite}," +
+                $" In_gallery : {In_gallery}," +
+                $" In_most_viral : {In_most_viral}," +
+                $" Has_sound : {Has_sound}," +
+                $" Is_ad : {Is_ad}," +
+                $" Nsfw : {Nsfw}," +
+                $" Link : {Link}," +
+                $" DateTime : {DateTime}," +
+                $" Mp4 : {Mp4}," +
+                $" ls : {Hls}";
         }
     }
 }

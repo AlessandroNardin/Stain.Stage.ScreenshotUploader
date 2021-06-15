@@ -5,7 +5,6 @@ using System.Drawing;
 namespace Stain.Stage.ScreenshotUploader {
     public static class Program {
         public static void Main(string[] args) {
-
             Console.WriteLine("START");
 
             using UploadFile uploader = new();
