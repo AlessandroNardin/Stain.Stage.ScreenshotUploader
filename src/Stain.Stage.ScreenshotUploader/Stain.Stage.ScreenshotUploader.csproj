@@ -13,6 +13,7 @@
 
     <ItemGroup>
         <PackageReference Include="CommandLineParser" Version="2.7.82" />
+        <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.0.2" />
     </ItemGroup>
 
     <ItemGroup>
