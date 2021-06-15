@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Stain.Stage.ScreenshotUploader.Screenshot {
     class PaintOpener {
-        
+        public void OpenImage() {
+
+        }
     }
 }
