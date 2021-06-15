@@ -7,11 +7,9 @@ using System.Threading;
 namespace Stain.Stage.ScreenshotUploader {
     public static class Program {
 
-
         public static void Main(string[] args) {
-
             //Captures a screenshot and edits it with paint.
-            String screenshot = Screenshot.Screenshot.Capture();
+            string screenshot = Screenshot.Screenshot.Capture();
             Bitmap editedImage = Screenshot.ImageEditor.PaintEdit(screenshot);
 #if DEBUG 
             //Save the edited image on the desktop for test purposes.
@@ -19,7 +17,5 @@ namespace Stain.Stage.ScreenshotUploader {
             editedImage.Save(@path);
 #endif
         }
-
-
     }
 }

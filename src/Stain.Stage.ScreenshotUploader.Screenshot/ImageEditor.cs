@@ -5,15 +5,12 @@ using System.Threading;
 
 namespace Stain.Stage.ScreenshotUploader.Screenshot {
     public class ImageEditor {
-
-
         /// <summary>
         /// Opens an Image with Paint, after paint is closed returns the Edited bitmap Image.
         /// </summary>
         /// <param name="path">The Path to the image that needs to be edited.</param>
         /// <returns>The bitmap object of the edited image.</returns>
-        public static Bitmap PaintEdit(string path) {
-
+       public static Bitmap PaintEdit(string path) {
             //Opens paint with the image.
             Process paint = Process.Start("mspaint", @path);
 
