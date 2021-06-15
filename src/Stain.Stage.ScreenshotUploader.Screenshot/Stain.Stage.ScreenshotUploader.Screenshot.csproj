@@ -4,4 +4,13 @@
     <PropertyGroup>
         <Description>Library responsible for taking screenshots.</Description>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="PresentationFramework" />
+      <Reference Include="System.Windows.Forms" />
+    </ItemGroup>
 </Project>
