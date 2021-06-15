@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,8 +8,11 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace Stain.Stage.ScreenshotUploader.Uploader {
     public class UploadFile : IDisposable {
@@ -49,7 +54,17 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
             }
 
             Console.WriteLine(GetResult(response.Content.ReadAsStringAsync()));
+
+
+            JObject googleSearch = JObject.Parse(GetResult(response.Content.ReadAsStringAsync()));
+
+            // get JSON result objects into a list
+            ErrorData error = googleSearch["data"].ToObject<ErrorData>();
+
+            // serialize JSON results into .NET objects
+            Console.WriteLine(error.ToString());
         }
+
 
         public void Dispose() {
             ApiClient.Dispose();
