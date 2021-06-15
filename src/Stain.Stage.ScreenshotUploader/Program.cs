@@ -1,23 +1,25 @@
-using Microsoft.Toolkit.Uwp.Notifications;
 using Stain.Stage.ScreenshotUploader.Screenshot;
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using static System.Net.Mime.MediaTypeNames;
+using System.Threading;
 
 namespace Stain.Stage.ScreenshotUploader {
     public static class Program {
+
+
         public static void Main(string[] args) {
-            ToastNotificationManagerCompat.OnActivated += OnOpenedFromNotification;
 
-            Point pt1 = new Point(0, 0);
-            Point pt2 = new Point(100, 100);
-            ScreenshotNotification.NotifyScreenshot(Screenshot.Screenshot.Capture(pt1,pt2));
+            //Captures a screenshot and edits it with paint.
+            String screenshot = Screenshot.Screenshot.Capture();
+            Bitmap editedImage = Screenshot.ImageEditor.PaintEdit(screenshot);
+#if DEBUG 
+            //Save the edited image on the desktop for test purposes.
+            string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{Guid.NewGuid()}.jpg");
+            editedImage.Save(@path);
+#endif
         }
 
-        private static void OnOpenedFromNotification(ToastNotificationActivatedEventArgsCompat e) {
-            /*Console.WriteLine(e);
-            Process.Start("C:\\WINDOWS\\system32\\mspaint.exe");*/
-        }
+
     }
 }

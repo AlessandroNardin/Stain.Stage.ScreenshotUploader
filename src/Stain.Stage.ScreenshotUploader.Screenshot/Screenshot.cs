@@ -6,6 +6,9 @@ using System.Windows.Forms;
 
 
 namespace Stain.Stage.ScreenshotUploader.Screenshot {
+    /// <summary>
+    /// A Class containing two methods which allows to capture the entire screen or just one part of it
+    /// </summary>
     public class Screenshot {
 
         [System.Runtime.InteropServices.DllImport("kernel32.dll")]
