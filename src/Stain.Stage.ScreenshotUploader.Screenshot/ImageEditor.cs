@@ -8,9 +8,13 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
         /// <summary>
         /// Opens an Image with Paint, after paint is closed returns the Edited bitmap Image.
         /// </summary>
-        /// <param name="path">The Path to the image that needs to be edited.</param>
+        /// <param name="path">The Bitmap object containing the image that needs to be edited.</param>
         /// <returns>The bitmap object of the edited image.</returns>
-       public static Bitmap PaintEdit(string path) {
+       public static Bitmap PaintEdit(Bitmap screenshot) {
+
+            string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.jpg");
+            screenshot.Save(@path);
+
             //Opens paint with the image.
             Process paint = Process.Start("mspaint", @path);
 
