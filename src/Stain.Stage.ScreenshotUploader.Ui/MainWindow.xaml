@@ -19,7 +19,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Button
-            Name="newScreenshot"
+            Name="NewScreenshot"
             Grid.Row="0"
             Grid.Column="0"
             Grid.ColumnSpan="2"
@@ -27,10 +27,11 @@
             Margin="10,10,10,10"
             FontSize="25"
             FontFamily="Segoe UI"
+            Click="newScreenshot_Click"
         >New Screenshot
         </Button>
         <Image
-            Source="C:\Users\utente.elettrico\Desktop\Test.png"
+            Name="ScreenshotPreview"
             Grid.Row="1"
             Grid.Column="0"
             Grid.ColumnSpan="2"
@@ -44,6 +45,7 @@
             Margin="10,10,5,10"
             FontSize="25"
             FontFamily="Segoe UI"
+            Click="Edit_Click"
         >Edit
         </Button>
         <Button
