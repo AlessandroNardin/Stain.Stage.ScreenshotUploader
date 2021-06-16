@@ -9,7 +9,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow {
-        private Bitmap _screenShot = new Bitmap("C:\\Users\\utente.elettrico\\Desktop\\ProvaPNG.png");
+        private Bitmap _screenShot;
 
         public MainWindow() {
             InitializeComponent();
@@ -30,9 +30,8 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
         }
 
         private void Upload_Click(object sender, RoutedEventArgs e) {
-            using UploadFile uploader = new();
             UploadData data;
-            uploader.TryUploadImage(_screenShot, out data);
+            UploadFile.Instance.TryUploadImage(_screenShot, out data);
 
             Link.Text = data.Link;
         }

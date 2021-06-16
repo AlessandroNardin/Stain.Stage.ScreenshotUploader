@@ -1,19 +1,17 @@
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-
 
 namespace Stain.Stage.ScreenshotUploader.Uploader {
     
-    public class UploadFile : IDisposable {
-        private HttpClient ApiClient { get; } = new HttpClient();
-        
+    public class UploadFile{
+        public RestClient client;
+        public static UploadFile Instance { get; } = new UploadFile();
+
+        private UploadFile() {
+            client = new RestClient("https://api.imgur.com/3/upload");
+        }
         public string ConvertImageToBase64(Image image) {
             return Convert.ToBase64String(ImageToByteArray(image));
         }
@@ -25,8 +23,7 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
         //method to call to upload an image
         public bool TryUploadImage(Bitmap image, out UploadData data) {
             data = default;
-
-            RestClient client = new RestClient("https://api.imgur.com/3/upload");
+            
             client.Timeout = -1;
             RestRequest request = new RestRequest(Method.POST);
             request.AddHeader("Authorization", "Client-ID 6168f4a3afb8008");
@@ -36,6 +33,7 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
 
+            //extraction of the response paramethers
             JObject search = JObject.Parse(response.Content);
 
             if((bool)search["success"]) {
@@ -47,29 +45,7 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
                 ErrorData error = search["data"].ToObject<ErrorData>();
                 Console.WriteLine(error.ToString());
                 return false;
-            }
-            
-        }
-
-        public void Dispose() {
-            ApiClient.Dispose();
-        }
-
-        private static T GetResult<T>(Task<T> input) {
-            T result = default;
-            input.Wait();
-
-            try {
-                result = input.Result;
-            } catch(AggregateException e) {
-                Console.WriteLine($"Task Cancelled: {e.Message}");
-            } catch(Exception e) {
-                Console.WriteLine($"Error occurred: {e.Message}");
-                Exception inner = e.InnerException;
-                Console.WriteLine($"Inner Exception Error: {inner?.Message ?? "<NULL>"}");
-            }
-
-            return result;
+            }        
         }
     }
 }

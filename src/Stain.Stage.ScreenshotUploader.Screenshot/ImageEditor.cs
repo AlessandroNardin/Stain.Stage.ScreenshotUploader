@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Threading;
 
 namespace Stain.Stage.ScreenshotUploader.Screenshot {
-    public class ImageEditor {
+    public static class ImageEditor {
         /// <summary>
         /// Opens an Image with Paint, after paint is closed returns the Edited bitmap Image.
         /// </summary>
