@@ -16,11 +16,8 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
             return Convert.ToBase64String(ImageToByteArray(image));
         }
 
-        public byte[] ImageToByteArray(Image imageIn) {
-            using(var ms = new MemoryStream()) {
-                imageIn.Save(ms, imageIn.RawFormat);
-                return ms.ToArray();
-            }
+        public byte[] ImageToByteArray(Image image) {
+            return new ImageConverter().ConvertTo(image, typeof(byte[])) as byte[];
         }
 
         //method to call to upload an image
@@ -35,7 +32,7 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
 
             HttpRequestMessage request = new();
             request.Content = content;
-            request.Headers.Add("Authorization", $"Client-ID {"a"}");
+            request.Headers.Add("Authorization", $"Client-ID {"6168f4a3afb8008"}");
 
             HttpResponseMessage response = GetResult(ApiClient.PostAsync("https://api.imgur.com/3/upload", content));
             if(response == null || !response.IsSuccessStatusCode) {

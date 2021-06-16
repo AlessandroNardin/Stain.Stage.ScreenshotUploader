@@ -9,7 +9,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow {
-        private Bitmap _screenShot = new Bitmap("C:\\Users\\utente.elettrico\\Desktop\\Test.png");
+        private Bitmap _screenShot = new Bitmap("C:\\Users\\utente.elettrico\\Desktop\\ProvaPNG.png");
 
         public MainWindow() {
             InitializeComponent();
@@ -17,14 +17,14 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
 
         private void newScreenshot_Click(object sender, RoutedEventArgs e) {
             _screenShot = Screenshot.Screenshot.Capture();
-            string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.jpg");
+            string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
             _screenShot.Save(path);
             ScreenshotPreview.Source = new BitmapImage(new Uri(path));
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e) {
             _screenShot = Screenshot.ImageEditor.PaintEdit(_screenShot);
-            string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.jpg");
+            string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
             _screenShot.Save(path);
             ScreenshotPreview.Source = new BitmapImage(new Uri(path));
         }

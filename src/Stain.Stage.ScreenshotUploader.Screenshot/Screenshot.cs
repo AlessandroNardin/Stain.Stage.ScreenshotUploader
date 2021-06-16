@@ -42,7 +42,7 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
             // Shows the console Window
             ShowWindow(handle, SwShow);
 #if DEBUG
-            string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{Guid.NewGuid()}.jpg");
+            string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{Guid.NewGuid()}.png");
             screenshot.Save(@path);
 #endif
             return screenshot;
@@ -74,7 +74,7 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
             // Shows the console Window
             ShowWindow(handle, SwShow);
 #if DEBUG
-            string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{Guid.NewGuid()}.jpg");
+            string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{Guid.NewGuid()}.png");
             screenshot.Save(@path);            
 #endif
             return screenshot;
