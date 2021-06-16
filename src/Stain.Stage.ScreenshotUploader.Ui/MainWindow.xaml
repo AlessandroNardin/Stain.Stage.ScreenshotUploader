@@ -33,9 +33,7 @@
             Name="ScreenshotPreview"
             Grid.Row="1"
             Grid.Column="0"
-            Grid.ColumnSpan="2"
-        >    
-        </Image>
+            Grid.ColumnSpan="2" />
         <Button
             Name="Edit"
             Grid.Row="3"
@@ -62,13 +60,10 @@
             Name ="Link"
             Grid.Row="2"
             Grid.Column="0"
-            Grid.ColumnSpan="1"
             Background="Gainsboro"
             Margin="5,10,10,10"
             FontSize="25"
-            FontFamily="Segoe UI"
-        >
-        </TextBlock>
+            FontFamily="Segoe UI" />
         <Button
             Name="Open"
             Grid.Row="2"
