@@ -46,6 +46,7 @@
             Margin="10,10,5,10"
             FontSize="25"
             FontFamily="Segoe UI"
+            Click="Edit_Click"
         >Edit
         </Button>
         <Button
