@@ -1,8 +1,10 @@
 using Newtonsoft.Json.Linq;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -24,25 +26,17 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
         public bool TryUploadImage(Bitmap image, out UploadData data) {
             data = default;
 
-            Dictionary<string, string> formContent = new() {
-                { "image", ConvertImageToBase64(image) },
-                { "type", "base64" },
-            };
-            FormUrlEncodedContent content = new(formContent);
+            RestClient client = new RestClient("https://api.imgur.com/3/upload");
+            client.Timeout = -1;
+            RestRequest request = new RestRequest(Method.POST);
+            request.AddHeader("Authorization", "Client-ID 6168f4a3afb8008");
+            request.AlwaysMultipartFormData = true;
+            request.AddParameter("image", ConvertImageToBase64(image));
+            request.AddParameter("type", "base64");
+            IRestResponse response = client.Execute(request);
+            Console.WriteLine(response.Content);
 
-            HttpRequestMessage request = new();
-            request.Content = content;
-            request.Headers.Add("Authorization", $"Client-ID {"6168f4a3afb8008"}");
-
-            HttpResponseMessage response = GetResult(ApiClient.PostAsync("https://api.imgur.com/3/upload", content));
-            if(response == null || !response.IsSuccessStatusCode) {
-                Console.WriteLine(response.StatusCode);
-                return false;
-            }
-
-            Console.WriteLine(GetResult(response.Content.ReadAsStringAsync()));
-
-            JObject search = JObject.Parse(GetResult(response.Content.ReadAsStringAsync()));
+            JObject search = JObject.Parse(response.Content);
 
             if((bool)search["success"]) {
                 UploadData uData = search["data"].ToObject<UploadData>();
