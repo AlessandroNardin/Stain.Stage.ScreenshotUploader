@@ -8,24 +8,23 @@ using System.Threading;
 namespace Stain.Stage.ScreenshotUploader {
     public static class Program {
 
-        public static void Main(string[] args) {
+        public static void Main() {
             Console.WriteLine("START");
-          
+
             //Captures a screenshot and edits it with paint.
-            Point p1 = new Point(100, 100);
-            Point p2 = new Point(500, 500);
+            Point p1 = new(100, 100);
+            Point p2 = new(500, 500);
             Bitmap screenshot = Screenshot.Screenshot.Capture(p1,p2);
-            Bitmap editedImage = Screenshot.ImageEditor.PaintEdit(screenshot);
-#if DEBUG 
+            Bitmap editedImage = ImageEditor.PaintEdit(screenshot);
+
+#if DEBUG
             //Save the edited image on the desktop for test purposes.
             string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{Guid.NewGuid()}.jpg");
-            editedImage.Save(@path);
+            editedImage.Save(path);
+#endif
 
             using UploadFile uploader = new();
-            UploadData data;
-            Bitmap bm = new Bitmap("C:\\Users\\utente.elettrico\\Desktop\\Test.png");
-            uploader.TryUploadImage(bm, out data);
-#endif
+            uploader.TryUploadImage(editedImage, out UploadData _);
         }
     }
 }
