@@ -41,7 +41,7 @@
             Grid.Row="3"
             Grid.Column="0"
             Background="Gainsboro"
-            Margin="10,10,10,10"
+            Margin="10,10,5,10"
             FontSize="25"
             FontFamily="Segoe UI"
         >Edit
@@ -51,7 +51,7 @@
             Grid.Row="3"
             Grid.Column="1"
             Background="Gainsboro"
-            Margin="10,10,10,10"
+            Margin="5,10,10,10"
             FontSize="25"
             FontFamily="Segoe UI"
         >Upload

@@ -35,7 +35,7 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
 
             HttpRequestMessage request = new();
             request.Content = content;
-            request.Headers.Add("Authorization", $"Client-ID {ApiConstants.ImgurClientId}");
+            request.Headers.Add("Authorization", $"Client-ID {"a"}");
 
             HttpResponseMessage response = GetResult(ApiClient.PostAsync("https://api.imgur.com/3/upload", content));
             if(response == null || !response.IsSuccessStatusCode) {
