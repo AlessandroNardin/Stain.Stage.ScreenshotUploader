@@ -2,7 +2,7 @@ using IniParser;
 using IniParser.Model;
 
 namespace Stain.Stage.ScreenshotUploader.Uploader.config {
-    public class ConfigManager {
+    public class ConfigManager{
         public static ConfigManager Instance { get; } = new(@"..\..\..\..\..\config.ini");
 
         public string Path { get; }

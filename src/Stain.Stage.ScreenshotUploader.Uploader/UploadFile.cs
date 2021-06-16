@@ -1,11 +1,12 @@
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace Stain.Stage.ScreenshotUploader.Uploader {
-    
-    public class UploadFile{
+
+    public class UploadFile {
         public RestClient client;
         public static UploadFile Instance { get; } = new UploadFile();
 
@@ -33,19 +34,25 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
             request.AddParameter("image", ConvertImageToBase64(image));
             request.AddParameter("type", "base64");
             IRestResponse response = client.Execute(request);
-            Console.WriteLine(response.Content);
+#if DEBUG
+            Debug.WriteLine(response.Content);
+#endif
 
             //extraction of the response paramethers
             JObject search = JObject.Parse(response.Content);
 
             if((bool)search["success"]) {
                 UploadData uData = search["data"].ToObject<UploadData>();
-                Console.WriteLine(uData.ToString());
+#if DEBUG
+                Debug.WriteLine(uData.ToString());
+#endif
                 data = uData;
                 return true;
             } else {
                 ErrorData error = search["data"].ToObject<ErrorData>();
-                Console.WriteLine(error.ToString());
+#if DEBUG
+                Debug.WriteLine(error.ToString());
+#endif
                 return false;
             }        
         }
