@@ -49,5 +49,9 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
                 return;
             System.Diagnostics.Process.Start(Link.Text);
         }
+
+        private void Copy_Click(object sender, RoutedEventArgs e) {
+            Clipboard.SetText(Link.Text);
+        }
     }
 }
