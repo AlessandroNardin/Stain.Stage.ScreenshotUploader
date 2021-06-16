@@ -22,11 +22,13 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
 
         //method to call to upload an image
         public bool TryUploadImage(Bitmap image, out UploadData data) {
+           // config.ConfigManager.Instance.Load();
+
             data = default;
             
             client.Timeout = -1;
             RestRequest request = new RestRequest(Method.POST);
-            request.AddHeader("Authorization", "Client-ID 6168f4a3afb8008");
+            request.AddHeader("Authorization", $"Client-ID {config.ConfigManager.Instance.Config.ImgurClientId}");
             request.AlwaysMultipartFormData = true;
             request.AddParameter("image", ConvertImageToBase64(image));
             request.AddParameter("type", "base64");
