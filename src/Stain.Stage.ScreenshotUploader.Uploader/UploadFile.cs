@@ -1,84 +1,60 @@
 using Newtonsoft.Json.Linq;
+using RestSharp;
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
-
 
 namespace Stain.Stage.ScreenshotUploader.Uploader {
-    
-    public class UploadFile : IDisposable {
-        private HttpClient ApiClient { get; } = new HttpClient();
-        
+
+    public class UploadFile {
+        public RestClient client;
+        public static UploadFile Instance { get; } = new UploadFile();
+
+        private UploadFile() {
+            client = new RestClient("https://api.imgur.com/3/upload");
+        }
         public string ConvertImageToBase64(Image image) {
             return Convert.ToBase64String(ImageToByteArray(image));
         }
 
-        public byte[] ImageToByteArray(Image imageIn) {
-            using(var ms = new MemoryStream()) {
-                imageIn.Save(ms, imageIn.RawFormat);
-                return ms.ToArray();
-            }
+        public byte[] ImageToByteArray(Image image) {
+            return new ImageConverter().ConvertTo(image, typeof(byte[])) as byte[];
         }
 
         //method to call to upload an image
         public bool TryUploadImage(Bitmap image, out UploadData data) {
+           // config.ConfigManager.Instance.Load();
+
             data = default;
+            
+            client.Timeout = -1;
+            RestRequest request = new RestRequest(Method.POST);
+            request.AddHeader("Authorization", $"Client-ID {config.ConfigManager.Instance.Config.ImgurClientId}");
+            request.AlwaysMultipartFormData = true;
+            request.AddParameter("image", ConvertImageToBase64(image));
+            request.AddParameter("type", "base64");
+            IRestResponse response = client.Execute(request);
+#if DEBUG
+            Debug.WriteLine(response.Content);
+#endif
 
-            Dictionary<string, string> formContent = new() {
-                { "image", ConvertImageToBase64(image) },
-                { "type", "base64" },
-            };
-            FormUrlEncodedContent content = new(formContent);
-
-            HttpRequestMessage request = new();
-            request.Content = content;
-            request.Headers.Add("Authorization", $"Client-ID {"a"}");
-
-            HttpResponseMessage response = GetResult(ApiClient.PostAsync("https://api.imgur.com/3/upload", content));
-            if(response == null || !response.IsSuccessStatusCode) {
-                Console.WriteLine(response.StatusCode);
-                return false;
-            }
-
-            Console.WriteLine(GetResult(response.Content.ReadAsStringAsync()));
-
-            JObject search = JObject.Parse(GetResult(response.Content.ReadAsStringAsync()));
+            //extraction of the response paramethers
+            JObject search = JObject.Parse(response.Content);
 
             if((bool)search["success"]) {
                 UploadData uData = search["data"].ToObject<UploadData>();
-                Console.WriteLine(uData.ToString());
+#if DEBUG
+                Debug.WriteLine(uData.ToString());
+#endif
                 data = uData;
                 return true;
             } else {
                 ErrorData error = search["data"].ToObject<ErrorData>();
-                Console.WriteLine(error.ToString());
+#if DEBUG
+                Debug.WriteLine(error.ToString());
+#endif
                 return false;
-            }
-            
-        }
-
-        public void Dispose() {
-            ApiClient.Dispose();
-        }
-
-        private static T GetResult<T>(Task<T> input) {
-            T result = default;
-            input.Wait();
-
-            try {
-                result = input.Result;
-            } catch(AggregateException e) {
-                Console.WriteLine($"Task Cancelled: {e.Message}");
-            } catch(Exception e) {
-                Console.WriteLine($"Error occurred: {e.Message}");
-                Exception inner = e.InnerException;
-                Console.WriteLine($"Inner Exception Error: {inner?.Message ?? "<NULL>"}");
-            }
-
-            return result;
+            }        
         }
     }
 }

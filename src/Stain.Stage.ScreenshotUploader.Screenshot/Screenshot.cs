@@ -6,16 +6,7 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
     /// <summary>
     /// A Class containing two methods which allows to capture the entire screen or just one part of it
     /// </summary>
-    public class Screenshot {
-        const int SwHide = 0;
-        const int SwShow = 5;
-
-        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
-        static extern IntPtr GetConsoleWindow();
-
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-        
+    public static class Screenshot {
         /// <summary>
         /// Returns a bitmap object containing a screenshot of the entire screen.
         /// </summary>
@@ -30,19 +21,12 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
             int sizeHeigth = bottomRightCorner.Y - upperLeftCorner.Y;
             Size dimension = new Size(sizeWidth, sizeHeigth);
 
-            // Hides the console Window
-            var handle = GetConsoleWindow();
-            ShowWindow(handle, SwHide);
-
             // Takes the screenshot
             Bitmap screenshot = new Bitmap(sizeWidth,sizeHeigth);
             Graphics graph = Graphics.FromImage(screenshot);
             graph.CopyFromScreen(upperLeftCorner, imageDestinationPoint, dimension);
-
-            // Shows the console Window
-            ShowWindow(handle, SwShow);
 #if DEBUG
-            string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{Guid.NewGuid()}.jpg");
+            string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{Guid.NewGuid()}.png");
             screenshot.Save(@path);
 #endif
             return screenshot;
@@ -62,19 +46,13 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
             int sizeHeigth = bottomRightCorner.Y - upperLeftCorner.Y;
             Size dimension = new Size(sizeWidth, sizeHeigth);
 
-            // Hides the console Window
-            var handle = GetConsoleWindow();
-            ShowWindow(handle, SwHide);
-
             // Takes the screenshot
             Bitmap screenshot = new Bitmap(sizeWidth, sizeHeigth);
             Graphics graph = Graphics.FromImage(screenshot);
             graph.CopyFromScreen(upperLeftCorner, imageDestinationPoint, dimension);
 
-            // Shows the console Window
-            ShowWindow(handle, SwShow);
 #if DEBUG
-            string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{Guid.NewGuid()}.jpg");
+            string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{Guid.NewGuid()}.png");
             screenshot.Save(@path);            
 #endif
             return screenshot;

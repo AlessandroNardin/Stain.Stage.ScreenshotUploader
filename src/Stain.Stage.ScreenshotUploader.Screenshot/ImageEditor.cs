@@ -4,14 +4,13 @@ using System.Drawing;
 using System.Threading;
 
 namespace Stain.Stage.ScreenshotUploader.Screenshot {
-    public class ImageEditor {
+    public static class ImageEditor {
         /// <summary>
         /// Opens an Image with Paint, after paint is closed returns the Edited bitmap Image.
         /// </summary>
         /// <returns>The bitmap object of the edited image.</returns>
        public static Bitmap PaintEdit(Bitmap screenshot) {
-
-            string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.jpg");
+            string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
             screenshot.Save(@path);
 
             //Opens paint with the image.
