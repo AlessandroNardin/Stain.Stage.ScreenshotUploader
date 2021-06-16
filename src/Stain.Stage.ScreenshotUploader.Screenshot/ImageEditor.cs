@@ -10,7 +10,7 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
         /// </summary>
         /// <returns>The bitmap object of the edited image.</returns>
        public static Bitmap PaintEdit(Bitmap screenshot) {
-
+           
             string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
             screenshot.Save(@path);
 

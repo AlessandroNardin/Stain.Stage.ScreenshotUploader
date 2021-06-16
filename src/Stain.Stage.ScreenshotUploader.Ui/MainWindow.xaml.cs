@@ -23,6 +23,10 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e) {
+            //control on the screenshot existance
+            if(_screenShot == null)
+                return;
+
             _screenShot = Screenshot.ImageEditor.PaintEdit(_screenShot);
             string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
             _screenShot.Save(path);
@@ -37,6 +41,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
         }
 
         private void Open_Click(object sender, RoutedEventArgs e) {
+            //control on the link existance before open
             if(Link.Text == "")
                 return;
             System.Diagnostics.Process.Start(Link.Text);
