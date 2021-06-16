@@ -54,7 +54,30 @@
             Margin="5,10,10,10"
             FontSize="25"
             FontFamily="Segoe UI"
+            Click="Upload_Click"
         >Upload
+        </Button>
+        <TextBlock
+            Name ="Link"
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="1"
+            Background="Gainsboro"
+            Margin="5,10,10,10"
+            FontSize="25"
+            FontFamily="Segoe UI"
+        >
+        </TextBlock>
+        <Button
+            Name="Open"
+            Grid.Row="2"
+            Grid.Column="1"
+            Background="Gainsboro"
+            Margin="5,10,10,10"
+            FontSize="25"
+            FontFamily="Segoe UI"
+            Click="Open_Click"
+        >Open
         </Button>
     </Grid>
 </Window>
