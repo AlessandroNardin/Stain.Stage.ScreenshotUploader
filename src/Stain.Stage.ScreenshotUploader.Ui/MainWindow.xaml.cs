@@ -34,9 +34,12 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
         }
 
         private void Upload_Click(object sender, RoutedEventArgs e) {
+            //control on the screenshot existance
+            if(_screenShot == null)
+                return;
+
             UploadData data;
             UploadFile.Instance.TryUploadImage(_screenShot, out data);
-
             Link.Text = data.Link;
         }
 
