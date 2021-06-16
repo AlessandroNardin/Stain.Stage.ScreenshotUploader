@@ -1,7 +1,6 @@
 using System;
 using System.Drawing;
 using System.Windows;
-using System.Windows.Forms;
 
 namespace Stain.Stage.ScreenshotUploader.Screenshot {
     /// <summary>

@@ -1,15 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media.Imaging;
-
-using Stain.Stage.ScreenshotUploader.Screenshot;
 using Stain.Stage.ScreenshotUploader.Uploader;
 
 namespace Stain.Stage.ScreenshotUploader.Ui {
