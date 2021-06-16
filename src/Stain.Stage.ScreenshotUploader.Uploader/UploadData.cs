@@ -60,7 +60,7 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
         [JsonProperty("hls")]
         public string Hls { get; set; }
 
-        public string ToString() {
+        public override string ToString() {
             return $"Id : {Id}," +
                 $" DeleteHash : {DeleteHash}," +
                 $" Account_id : {AccountId}," +

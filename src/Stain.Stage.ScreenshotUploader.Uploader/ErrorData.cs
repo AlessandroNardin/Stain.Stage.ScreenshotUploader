@@ -10,7 +10,7 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
         [JsonProperty("method")]
         public string Method { get; set; }
 
-        public string ToString() {
+        public override string ToString() {
             return $"Error : {Error}," +
                 $" Request : {Request}," +
                 $" Method : {Method}";
