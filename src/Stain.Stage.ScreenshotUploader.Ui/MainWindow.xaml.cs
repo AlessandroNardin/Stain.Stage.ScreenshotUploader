@@ -37,6 +37,8 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
         }
 
         private void Open_Click(object sender, RoutedEventArgs e) {
+            if(Link.Text == "")
+                return;
             System.Diagnostics.Process.Start(Link.Text);
         }
     }
