@@ -8,31 +8,31 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window {
-        Bitmap ScreenShot = new Bitmap("C:\\Users\\utente.elettrico\\Desktop\\Test.png");
-      
+    public partial class MainWindow {
+        private Bitmap _screenShot = new Bitmap("C:\\Users\\utente.elettrico\\Desktop\\Test.png");
+
         public MainWindow() {
             InitializeComponent();
         }
 
         private void newScreenshot_Click(object sender, RoutedEventArgs e) {
-            screenshot = Screenshot.Screenshot.Capture();
+            _screenShot = Screenshot.Screenshot.Capture();
             string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.jpg");
-            screenshot.Save(path);
+            _screenShot.Save(path);
             ScreenshotPreview.Source = new BitmapImage(new Uri(path));
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e) {
-            screenshot = Screenshot.ImageEditor.PaintEdit(screenshot);
+            _screenShot = Screenshot.ImageEditor.PaintEdit(_screenShot);
             string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.jpg");
-            screenshot.Save(path);
+            _screenShot.Save(path);
             ScreenshotPreview.Source = new BitmapImage(new Uri(path));
         }
-      
+
         private void Upload_Click(object sender, RoutedEventArgs e) {
             using UploadFile uploader = new();
             UploadData data;
-            uploader.TryUploadImage(ScreenShot, out data);
+            uploader.TryUploadImage(_screenShot, out data);
 
             Link.Text = data.Link;
         }
