@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <VersionPrefix>0.0.1</VersionPrefix>
+        <VersionPrefix>0.0.2</VersionPrefix>
         <VersionSuffix>dogfood</VersionSuffix>
 
         <Version Condition="'$(Configuration)' == 'Debug'">$(VersionPrefix)-$(VersionSuffix)</Version>
