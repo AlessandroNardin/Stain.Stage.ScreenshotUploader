@@ -40,6 +40,7 @@
             Grid.Column="0"
             Grid.ColumnSpan="7"
             Margin="2"
+            Source= "{Binding Path=ImagePath}"
             />
         <Button
             Name="Edit"
