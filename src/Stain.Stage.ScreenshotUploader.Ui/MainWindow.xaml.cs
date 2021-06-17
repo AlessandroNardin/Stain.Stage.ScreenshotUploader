@@ -69,9 +69,21 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
                 UploadData data;
                 UploadFile.Instance.TryUploadImage(imageBitmap, out data);
                 UploadedScreenshotLink = data.Link;
+
                 System.Diagnostics.Process.Start(this.UploadedScreenshotLink);
-            }else{
+            }if(args.Contains("discard")) {
+            } else {
                 Screenshot.ImageEditor.PaintEdit(imageBitmap);
+                new ToastContentBuilder()
+                .AddText("Image Modified")
+                .AddHeroImage(new Uri(imagePath))
+                .AddButton(new ToastButton()
+                            .SetContent("Discard")
+                            .AddArgument("discard"))
+                .AddButton(new ToastButton()
+                            .SetContent("Upload on Imgur")
+                            .AddArgument("upload"))
+                .Show();
             }   
         }
 
