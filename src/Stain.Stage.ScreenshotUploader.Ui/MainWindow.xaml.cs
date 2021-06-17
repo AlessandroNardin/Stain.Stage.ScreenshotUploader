@@ -1,10 +1,9 @@
 using System;
 using System.Drawing;
 using System.Windows;
-using System.Windows.Media.Imaging;
 using Stain.Stage.ScreenshotUploader.Uploader;
-using System.Windows.Data;
 using System.ComponentModel;
+using System.Threading;
 
 namespace Stain.Stage.ScreenshotUploader.Ui {
     /// <summary>
@@ -61,7 +60,10 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
         }
 
         private void newScreenshot_Click(object sender, RoutedEventArgs e) {
+            this.WindowState = WindowState.Minimized;
+            Thread.Sleep(200);
             _screenShot = Screenshot.Screenshot.Capture();
+            this.WindowState = WindowState.Normal;
             string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
             _screenShot.Save(tempPath);
             ImagePath = tempPath;
