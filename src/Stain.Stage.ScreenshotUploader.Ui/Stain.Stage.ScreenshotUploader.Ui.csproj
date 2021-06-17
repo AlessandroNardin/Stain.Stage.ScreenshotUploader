@@ -21,4 +21,8 @@
         <ProjectReference Include=".\..\Stain.Stage.ScreenshotUploader.Screenshot\Stain.Stage.ScreenshotUploader.Screenshot.csproj" />
         <ProjectReference Include=".\..\Stain.Stage.ScreenshotUploader.Uploader\Stain.Stage.ScreenshotUploader.Uploader.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="System.Windows.Forms" />
+    </ItemGroup>
 </Project>
