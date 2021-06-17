@@ -31,7 +31,7 @@
             Grid.ColumnSpan="7"
             Background="Gainsboro"
             FontFamily="Segoe UI"
-            Click="newScreenshot_Click" Margin="2"
+            Click="newScreenshot_Click" Margin="2,2,2,0"
         >New Screenshot
         </Button>
         <Image
@@ -39,7 +39,7 @@
             Grid.Row="1"
             Grid.Column="0"
             Grid.ColumnSpan="7"
-            Margin="2"
+            Margin="3"
             Source= "{Binding Path=ImagePath}"
             />
         <Button
@@ -68,7 +68,7 @@
             Grid.Column="0"
             Grid.ColumnSpan="5"
             Background="Gainsboro"
-            FontFamily="Segoe UI" Margin="2,1,0,1"
+            FontFamily="Segoe UI" Margin="3,1,0,1"
             Text ="{Binding Path=UploadedScreenshotLink}"/>
         <Button
             Name="Open"

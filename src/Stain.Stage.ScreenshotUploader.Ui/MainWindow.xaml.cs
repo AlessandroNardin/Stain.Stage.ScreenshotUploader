@@ -13,7 +13,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
     public partial class MainWindow : INotifyPropertyChanged{
         private Bitmap _screenShot;
 
-        private string imagePath;
+        private string imagePath = @"C:\Users\utente.elettrico.STAIN\source\repos\Stain.Stage.ScreenshotUploader\Default.png";
         private string uploadedScreenshotLink;
         private bool isScreenshotTaken = false;
         private bool isUploaded = false;
