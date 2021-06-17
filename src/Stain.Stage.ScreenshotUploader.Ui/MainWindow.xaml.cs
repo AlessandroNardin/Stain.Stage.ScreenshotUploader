@@ -13,20 +13,38 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
     public partial class MainWindow : INotifyPropertyChanged{
         private Bitmap _screenShot;
 
-        private string path;
+        private string imagePath;
+        private string uploadedScreenshotLink;
+        private bool isScreenshotTaken = false;
+        private bool isUploaded = false;
         public string ImagePath {
-            get { return path; }
+            get { return imagePath; }
             set {
-                path = value;
+                imagePath = value;
                 OnPropertyChanged();
             }
         }
 
-        private string link;
         public string UploadedScreenshotLink {
-            get { return link; }
+            get { return uploadedScreenshotLink; }
             set {
-                link = value;
+                uploadedScreenshotLink = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsScreenshotTaken {
+            get { return isScreenshotTaken; }
+            set {
+                isScreenshotTaken = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsUploaded {
+            get { return isUploaded; }
+            set {
+                isUploaded = value;
                 OnPropertyChanged();
             }
         }
@@ -46,14 +64,11 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
             _screenShot = Screenshot.Screenshot.Capture();
             string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
             _screenShot.Save(tempPath);
-            ImagePath = tempPath; 
+            ImagePath = tempPath;
+            IsScreenshotTaken = true;
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e) {
-            //control on the screenshot existance
-            if(_screenShot == null)
-                return;
-
             _screenShot = Screenshot.ImageEditor.PaintEdit(_screenShot);
             string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
             _screenShot.Save(tempPath);
@@ -61,19 +76,13 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
         }
 
         private void Upload_Click(object sender, RoutedEventArgs e) {
-            //control on the screenshot existance
-            if(_screenShot == null)
-                return;
-
             UploadData data;
             UploadFile.Instance.TryUploadImage(_screenShot, out data);
             UploadedScreenshotLink = data.Link;
+            IsUploaded = true;
         }
 
         private void Open_Click(object sender, RoutedEventArgs e) {
-            //control on the link existance before open
-            if(UploadedScreenshotLink == "")
-                return;
             System.Diagnostics.Process.Start(UploadedScreenshotLink);
         }
 
