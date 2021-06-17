@@ -12,6 +12,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
     /// </summary>
     public partial class MainWindow : INotifyPropertyChanged{
         private Bitmap _screenShot;
+
         private string path;
         public string ImagePath {
             get { return path; }
@@ -21,8 +22,17 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
             }
         }
 
-        private void OnPropertyChanged(string path=null) {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(path));
+        private string link;
+        public string UploadedScreenshotLink {
+            get { return link; }
+            set {
+                link = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private void OnPropertyChanged(string arg=null) {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(arg));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -57,18 +67,18 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
 
             UploadData data;
             UploadFile.Instance.TryUploadImage(_screenShot, out data);
-            Link.Text = data.Link;
+            UploadedScreenshotLink = data.Link;
         }
 
         private void Open_Click(object sender, RoutedEventArgs e) {
             //control on the link existance before open
-            if(Link.Text == "")
+            if(UploadedScreenshotLink == "")
                 return;
-            System.Diagnostics.Process.Start(Link.Text);
+            System.Diagnostics.Process.Start(UploadedScreenshotLink);
         }
 
         private void Copy_Click(object sender, RoutedEventArgs e) {
-            Clipboard.SetText(Link.Text);
+            Clipboard.SetText(UploadedScreenshotLink);
         }
     }
 }
