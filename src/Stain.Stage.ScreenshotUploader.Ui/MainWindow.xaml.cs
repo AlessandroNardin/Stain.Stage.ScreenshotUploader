@@ -61,7 +61,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
 
         private void newScreenshot_Click(object sender, RoutedEventArgs e) {
             this.WindowState = WindowState.Minimized;
-            Thread.Sleep(200);
+            Thread.Sleep(250);
             _screenShot = Screenshot.Screenshot.Capture();
             this.WindowState = WindowState.Normal;
             string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
