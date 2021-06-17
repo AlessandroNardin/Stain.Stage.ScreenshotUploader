@@ -23,8 +23,6 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
 
         //method to call to upload an image
         public bool TryUploadImage(Bitmap image, out UploadData data) {
-           // config.ConfigManager.Instance.Load();
-
             data = default;
             
             client.Timeout = -1;
@@ -37,7 +35,6 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
 #if DEBUG
             Debug.WriteLine(response.Content);
 #endif
-
             //extraction of the response paramethers
             JObject search = JObject.Parse(response.Content);
 
