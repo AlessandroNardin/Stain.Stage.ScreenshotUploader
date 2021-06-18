@@ -71,9 +71,13 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
                 UploadedScreenshotLink = data.Link;
 
                 System.Diagnostics.Process.Start(this.UploadedScreenshotLink);
-            }if(args.Contains("discard")) {
+            }else if(args.Contains("discard")) {
             } else {
-                Screenshot.ImageEditor.PaintEdit(imageBitmap);
+                imageBitmap = Screenshot.ImageEditor.PaintEdit(imageBitmap);
+
+                string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
+                imageBitmap.Save(tempPath);
+                ImagePath = tempPath;
                 new ToastContentBuilder()
                 .AddText("Image Modified")
                 .AddHeroImage(new Uri(imagePath))
