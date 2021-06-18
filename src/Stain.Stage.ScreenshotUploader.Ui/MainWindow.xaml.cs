@@ -4,13 +4,15 @@ using System.Windows;
 using Stain.Stage.ScreenshotUploader.Uploader;
 using System.ComponentModel;
 using System.Threading;
+using Microsoft.Toolkit.Uwp.Notifications;
+using Windows.Foundation.Collections;
 
 namespace Stain.Stage.ScreenshotUploader.Ui {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : INotifyPropertyChanged{
-        private Bitmap imageBitmap;
+        private static Bitmap imageBitmap;
         private string imagePath = @"C:\Users\utente.elettrico.STAIN\source\repos\Stain.Stage.ScreenshotUploader\Default.png";
         private string uploadedScreenshotLink;
         private bool isScreenshotTaken = false;
@@ -54,8 +56,39 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
         }
 
         public MainWindow() {
+            ToastNotificationManagerCompat.OnActivated += OnOpenedFromNotification;
+
             InitializeComponent();
             DataContext = this;
+        }
+
+        private void OnOpenedFromNotification(ToastNotificationActivatedEventArgsCompat e) {
+            ToastArguments args = ToastArguments.Parse(e.Argument);
+
+            if(args.Contains("upload")) {
+                UploadData data;
+                UploadFile.Instance.TryUploadImage(imageBitmap, out data);
+                UploadedScreenshotLink = data.Link;
+
+                System.Diagnostics.Process.Start(this.UploadedScreenshotLink);
+            }else if(args.Contains("discard")) {
+            } else {
+                imageBitmap = Screenshot.ImageEditor.PaintEdit(imageBitmap);
+
+                string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
+                imageBitmap.Save(tempPath);
+                ImagePath = tempPath;
+                new ToastContentBuilder()
+                .AddText("Image Modified")
+                .AddHeroImage(new Uri(imagePath))
+                .AddButton(new ToastButton()
+                            .SetContent("Discard")
+                            .AddArgument("discard"))
+                .AddButton(new ToastButton()
+                            .SetContent("Upload on Imgur")
+                            .AddArgument("upload"))
+                .Show();
+            }   
         }
 
         private void newScreenshot_Click(object sender, RoutedEventArgs e) {
@@ -67,6 +100,8 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
             string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
             imageBitmap.Save(tempPath);
             ImagePath = tempPath;
+
+            Screenshot.ScreenshotNotification.Notify(ImagePath);
 
             IsScreenshotTaken = true;
         }
