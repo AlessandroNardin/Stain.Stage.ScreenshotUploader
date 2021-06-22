@@ -15,7 +15,6 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Views {
     /// </summary>
     public partial class MainWindowView {
         public MainWindowView(IEventAggregator eventAggregator) {
-            
             eventAggregator.GetEvent<ScreenshotProcedureStarted>().Subscribe(OnScreenshotProcedureStarted);
             eventAggregator.GetEvent<ScreenshotProcedureEnded>().Subscribe(OnScreenshotProcedureEnded);
             InitializeComponent();

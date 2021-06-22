@@ -1,9 +1,11 @@
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Stain.Stage.ScreenshotUploader.Screenshot.Interfaces;
 using Stain.Stage.ScreenshotUploader.Ui.Events;
 using Stain.Stage.ScreenshotUploader.Uploader;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
 using System.Windows;
@@ -13,6 +15,9 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
         private static Bitmap imageBitmap;
 
         public IEventAggregator _eventAggregator { get; private set; }
+
+        private IScreenshot _screenshotService { get; }
+
         public DelegateCommand NewScreenshotCommand { get; set; }
         public DelegateCommand EditCommand { get; set; }
         public DelegateCommand UploadCommand { get; set; }
@@ -43,8 +48,10 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             set { SetProperty(ref _uploaded, value); }
         }
 
-        public MainWindowViewModel(IEventAggregator eventAggregator) {
+        public MainWindowViewModel(IScreenshot screenshotService, IEventAggregator eventAggregator) {
             _eventAggregator = eventAggregator;
+            _screenshotService = screenshotService;
+
             NewScreenshotCommand = new DelegateCommand(NewScreenshot);
             EditCommand = new DelegateCommand(Edit, IsScreenshotted).ObservesProperty(() => Screenshotted);
             UploadCommand = new DelegateCommand(Upload, IsScreenshotted).ObservesProperty(() => Screenshotted);
@@ -89,12 +96,12 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             _eventAggregator.GetEvent<ScreenshotProcedureStarted>().Publish();
 
             Thread.Sleep(250);
-            imageBitmap = Screenshot.Screenshot.Capture();
 
+            imageBitmap = _screenshotService.Capture();
             string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
             imageBitmap.Save(tempPath);
             ImagePath = tempPath;
-            //Screenshot.ScreenshotNotification.Notify(ImagePath);
+            Screenshot.ScreenshotNotification.Notify(ImagePath);
 
             _eventAggregator.GetEvent<ScreenshotProcedureEnded>().Publish();
 
