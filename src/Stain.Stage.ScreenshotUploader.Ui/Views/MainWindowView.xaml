@@ -1,8 +1,10 @@
-<Window x:Class="Stain.Stage.ScreenshotUploader.Ui.MainWindow"
+<Window x:Class="Stain.Stage.ScreenshotUploader.Ui.Views.MainWindowView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         Title="Screenshot Uploader"
         Width="800"
@@ -31,7 +33,8 @@
             Grid.ColumnSpan="7"
             Background="Gainsboro"
             FontFamily="Segoe UI"
-            Click="newScreenshot_Click" Margin="2,2,2,0"
+            Command="{Binding NewScreenshotCommand}"
+            Margin="2,2,2,0"
         >New Screenshot
         </Button>
         <Image
@@ -48,8 +51,8 @@
             Grid.Column="5"
             Background="Gainsboro"
             FontFamily="Segoe UI"
-            Click="Edit_Click" Margin="2,1,1,2"
-            IsEnabled="{Binding Path=IsScreenshotTaken}"
+            Command="{Binding EditCommand}"
+            Margin="2,1,1,2"
         >Edit
         </Button>
         <Button
@@ -58,8 +61,8 @@
             Grid.Column="6"
             Background="Gainsboro"
             FontFamily="Segoe UI"
-            Click="Upload_Click" Margin="1,1,2,2"
-            IsEnabled="{Binding Path=IsScreenshotTaken}"
+            Command="{Binding UploadCommand}"
+            Margin="1,1,2,2"
         >Upload
         </Button>
         <TextBlock
@@ -76,8 +79,8 @@
             Grid.Column="5"
             Background="Gainsboro"
             FontFamily="Segoe UI"
-            Click="Open_Click" Margin="2,1,1,1"
-            IsEnabled="{Binding Path=IsUploaded}"
+            Command="{Binding OpenCommand}"
+            Margin="2,1,1,1"
         >Open
         </Button>
         <Button
@@ -86,8 +89,8 @@
             Grid.Column="6"
             Background="Gainsboro"
             FontFamily="Segoe UI"
-            Click="Copy_Click" Margin="1,1,2,1"
-            IsEnabled="{Binding Path=IsUploaded}"
+            Command="{Binding CopyCommand}"
+            Margin="1,1,2,1"
         >Copy
         </Button>
     </Grid>
