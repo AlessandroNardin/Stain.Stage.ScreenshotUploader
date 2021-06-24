@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace Stain.Stage.ScreenshotUploader.Screenshot {
     public static class ScreenshotNotification {
-        public static void Notify(string path) {
+        public static void ShowNotificationWithImageAndTwoButtons(string notificationMessage, string notificationArgument, string imagePath, string button1Message, string button1Argument, string button2Message, string button2Argument) {
             new ToastContentBuilder()
-                .AddArgument("edit")
-                .AddText("Screenshot Captured")
-                .AddHeroImage(new Uri(path))
+                .AddArgument(notificationArgument)
+                .AddText(notificationMessage)
+                .AddHeroImage(new Uri(imagePath))
                 .AddButton(new ToastButton()
-                            .SetContent("Edit with Paint")
-                            .AddArgument("edit"))
+                            .SetContent(button1Message)
+                            .AddArgument(button1Argument))
                 .AddButton(new ToastButton()
-                            .SetContent("Upload on Imgur")
-                            .AddArgument("upload"))
+                            .SetContent(button2Message)
+                            .AddArgument(button2Argument))
                 .Show();
         }
     }

@@ -17,7 +17,6 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
             Process paint = Process.Start("mspaint", @path);
 
             //Waits the closure of Paint.
-            Console.WriteLine("Currently editing the image on Paint, close the program to continue the process");
             while(!paint.HasExited) {
                 Thread.Sleep(500);
             }

@@ -1,6 +1,8 @@
+using Microsoft.Toolkit.Uwp.Notifications;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Stain.Stage.ScreenshotUploader.Screenshot;
 using Stain.Stage.ScreenshotUploader.Ui.Events;
 using Stain.Stage.ScreenshotUploader.Uploader;
 using System;
@@ -19,7 +21,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
         public DelegateCommand CopyCommand { get; set; }
         public DelegateCommand OpenCommand { get; set; }
     
-        private string _imagePath = @"C:\Users\utente.elettrico.STAIN\source\repos\Stain.Stage.ScreenshotUploader\Default.png";
+        private string _imagePath = @"C:\Users\utente.elettrico.STAIN\source\repos\Stain.Stage.ScreenshotUploader\src\Stain.Stage.ScreenshotUploader.Ui\Default.png";
         public string ImagePath {
             get { return _imagePath; }
             set { SetProperty(ref _imagePath, value); }
@@ -44,7 +46,9 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
         }
 
         public MainWindowViewModel(IEventAggregator eventAggregator) {
+            ToastNotificationManagerCompat.OnActivated += OnOpenedFromNotification;
             _eventAggregator = eventAggregator;
+            _eventAggregator.GetEvent<ClickOnIcon>().Subscribe(NewScreenshot);
             NewScreenshotCommand = new DelegateCommand(NewScreenshot);
             EditCommand = new DelegateCommand(Edit, IsScreenshotted).ObservesProperty(() => Screenshotted);
             UploadCommand = new DelegateCommand(Upload, IsScreenshotted).ObservesProperty(() => Screenshotted);
@@ -94,11 +98,31 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
             imageBitmap.Save(tempPath);
             ImagePath = tempPath;
-            //Screenshot.ScreenshotNotification.Notify(ImagePath);
+            ScreenshotNotification.ShowNotificationWithImageAndTwoButtons("Screenshot captured","edit",ImagePath,"Edit with Paint","edit","Upload","upload");
 
             _eventAggregator.GetEvent<ScreenshotProcedureEnded>().Publish();
 
             Screenshotted = true;
+        }
+
+        private void OnOpenedFromNotification(ToastNotificationActivatedEventArgsCompat e) {
+            ToastArguments args = ToastArguments.Parse(e.Argument);
+
+            if(args.Contains("upload")) {
+                UploadData data;
+                UploadFile.Instance.TryUploadImage(imageBitmap, out data);
+                UploadedScreenshotLink = data.Link;
+
+                System.Diagnostics.Process.Start(this.UploadedScreenshotLink);
+            } else if(args.Contains("discard")) {
+            } else {
+                imageBitmap = ImageEditor.PaintEdit(imageBitmap);
+
+                string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
+                imageBitmap.Save(tempPath);
+                ImagePath = tempPath;
+                ScreenshotNotification.ShowNotificationWithImageAndTwoButtons("Image Modified", "", ImagePath, "Discard", "discard", "Upload", "upload");
+            }
         }
 
     }

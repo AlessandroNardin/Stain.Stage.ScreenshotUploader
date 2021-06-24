@@ -1,3 +1,4 @@
+using Hardcodet.Wpf.TaskbarNotification;
 using Prism.DryIoc;
 using Prism.Ioc;
 using Stain.Stage.ScreenshotUploader.Ui.Views;
