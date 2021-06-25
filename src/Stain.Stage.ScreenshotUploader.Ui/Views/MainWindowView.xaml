@@ -30,12 +30,23 @@
             Name="NewScreenshot"
             Grid.Row="0"
             Grid.Column="0"
-            Grid.ColumnSpan="7"
+            Grid.ColumnSpan="3"
             Background="Gainsboro"
             FontFamily="Segoe UI"
             Command="{Binding NewScreenshotCommand}"
             Margin="2,2,2,0"
             Content="New Screenshot">
+        </Button>
+        <Button
+            Name="NewWindowedScreenshot"
+            Grid.Row="0"
+            Grid.Column="4"
+            Grid.ColumnSpan="3"
+            Background="Gainsboro"
+            FontFamily="Segoe UI"
+            Command="{Binding NewWindowedScreenshotCommand}"
+            Margin="2,2,2,0"
+            Content="New Windowed Screenshot">
         </Button>
         <Image
             Name="ScreenshotPreview"

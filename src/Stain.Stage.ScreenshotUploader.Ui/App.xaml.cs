@@ -1,6 +1,6 @@
-using Hardcodet.Wpf.TaskbarNotification;
 using Prism.DryIoc;
 using Prism.Ioc;
+using Stain.Stage.ScreenshotUploader.Ui.Dialogs;
 using Stain.Stage.ScreenshotUploader.Ui.Views;
 using System.Windows;
 
@@ -11,11 +11,11 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
     public partial class App : PrismApplication {
         protected override Window CreateShell() {
             return Container.Resolve<MainWindowView>();
-            //INotification inst = Container.Resolve<INotification>();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry) {
-            //containerRegistry.RegisterSingleton<INotification, ScreenshotNotification>();
+            containerRegistry.RegisterDialogWindow<FullScreenDialogWindow>();
+            containerRegistry.RegisterDialog<CaptureDialog, CaptureDialogViewModel>();
         }
     }
 }

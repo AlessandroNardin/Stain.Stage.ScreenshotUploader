@@ -1,8 +1,6 @@
 using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows;
-using System.Windows.Forms;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
 
@@ -58,10 +56,6 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
 #if DEBUG
             string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{Guid.NewGuid()}.png");
             screenshot.Save(@path);
-            PictureBox pb1 = new PictureBox();
-            pb1.Image = Image.FromFile("../SamuderaJayaMotor.png");
-            pb1.Location = new Point(100, 100);
-            pb1.Size = new Size(500, 500);
 #endif
             return screenshot;
         }
