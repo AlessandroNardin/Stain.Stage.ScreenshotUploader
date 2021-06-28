@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace Stain.Stage.ScreenshotUploader.Screenshot.Interfaces {
+namespace Stain.Stage.ScreenshotUploader.Screenshot {
     public interface IScreenshot {
         public Bitmap Capture();
     }

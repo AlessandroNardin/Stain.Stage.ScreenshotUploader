@@ -148,9 +148,9 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             // Publish the event that communicates the start of the screenshot procedure
             _eventAggregator.GetEvent<ScreenshotProcedureStarted>().Publish();
             Thread.Sleep(250);
-
-            // Takes the screenshot and saves it, then it uploads the ImagePath Property
             imageBitmap = Screenshot.Screenshot.Capture();
+
+            imageBitmap = _screenshotService.Capture();
             string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
             imageBitmap.Save(tempPath);
             ImagePath = tempPath;

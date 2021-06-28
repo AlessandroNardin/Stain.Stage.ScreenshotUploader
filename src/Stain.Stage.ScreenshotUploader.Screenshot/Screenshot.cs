@@ -5,12 +5,11 @@ using System.Windows;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
 
-
-namespace Stain.Stage.ScreenshotUploader.Screenshot.Implementations.IScreenshotImplementations {
+namespace Stain.Stage.ScreenshotUploader.Screenshot {
     /// <summary>
     /// A Class containing two methods which allows to capture the entire screen or just one part of it
     /// </summary>
-     class Screenshot : IScreenshot{
+    class Screenshot : IScreenshot{
         /// <summary>
         /// Returns a bitmap object containing a screenshot of the entire screen.
         /// </summary>
@@ -18,7 +17,7 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot.Implementations.IScreenshotI
             // Creates the default points necessary to determine the screen size, and the starting point on the destination image.
             Point imageDestinationPoint = new Point(0, 0);
             Point upperLeftCorner = new Point(0, 0);
-            Point bottomRightCorner = new Point(Convert.ToInt32(System.Windows.SystemParameters.PrimaryScreenWidth), Convert.ToInt32(System.Windows.SystemParameters.PrimaryScreenHeight));
+            Point bottomRightCorner = new Point(Convert.ToInt32(SystemParameters.PrimaryScreenWidth), Convert.ToInt32(SystemParameters.PrimaryScreenHeight));
 
             // Determines the size of the screen in pixel
             int sizeWidth = bottomRightCorner.X - upperLeftCorner.X;

@@ -74,7 +74,8 @@
             FontFamily="Segoe UI"
             Command="{Binding UploadCommand}"
             Margin="1,1,2,2"
-            Content="Upload" />
+        >Upload
+        </Button>
         <TextBlock
             Name ="Link"
             Grid.Row="2"
