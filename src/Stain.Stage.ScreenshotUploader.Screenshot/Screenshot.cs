@@ -1,4 +1,3 @@
-using Stain.Stage.ScreenshotUploader.Screenshot.Interfaces;
 using System;
 using System.Drawing;
 using System.Windows;
@@ -9,11 +8,11 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
     /// <summary>
     /// A Class containing two methods which allows to capture the entire screen or just one part of it
     /// </summary>
-    class Screenshot : IScreenshot{
+    public static class Screenshot {
         /// <summary>
         /// Returns a bitmap object containing a screenshot of the entire screen.
         /// </summary>
-        public Bitmap Capture(){
+        public static Bitmap Capture(){
             // Creates the default points necessary to determine the screen size, and the starting point on the destination image.
             Point imageDestinationPoint = new Point(0, 0);
             Point upperLeftCorner = new Point(0, 0);

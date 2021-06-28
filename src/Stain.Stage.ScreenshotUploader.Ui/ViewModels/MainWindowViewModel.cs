@@ -150,7 +150,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             Thread.Sleep(250);
             imageBitmap = Screenshot.Screenshot.Capture();
 
-            imageBitmap = _screenshotService.Capture();
+            imageBitmap = Screenshot.Screenshot.Capture();
             string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
             imageBitmap.Save(tempPath);
             ImagePath = tempPath;

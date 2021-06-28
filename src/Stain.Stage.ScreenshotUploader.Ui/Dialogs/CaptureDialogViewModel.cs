@@ -16,7 +16,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Dialogs {
         public int Width { get; set; } = Convert.ToInt32(SystemParameters.PrimaryScreenWidth);
         public int Height { get; set; } = Convert.ToInt32(SystemParameters.PrimaryScreenHeight);
 
-        private string _margins;
+        private string _margins = "0";
         public string Margins {
             get { return _margins; }
             set { SetProperty(ref _margins, value); }

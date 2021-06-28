@@ -1,7 +1,6 @@
 using Prism.DryIoc;
 using Prism.Ioc;
 using Stain.Stage.ScreenshotUploader.Ui.Dialogs;
-using Stain.Stage.ScreenshotUploader.Screenshot.Interfaces;
 using Stain.Stage.ScreenshotUploader.Ui.Views;
 using System.Windows;
 
@@ -15,9 +14,10 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
             //INotification inst = Container.Resolve<INotification>();
         }
 
+        protected override void RegisterTypes(IContainerRegistry containerRegistry) {
             containerRegistry.RegisterDialogWindow<FullScreenDialogWindow>();
-            containerRegistry.RegisterDialog<CaptureDialog, CaptureDialogViewModel>();
-            moduleCatalog.AddModule<ScreenshotModule>();
+            containerRegistry.RegisterDialog<CaptureDialog>();
+            
         }
     }
 }

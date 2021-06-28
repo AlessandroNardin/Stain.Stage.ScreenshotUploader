@@ -8,7 +8,6 @@
         Title="FullScreenDialogWindow"
         WindowStyle="None"
         AllowsTransparency="True"
-        
         >
     <Window.Background>
         <SolidColorBrush Color="White" Opacity="0.01"/>
