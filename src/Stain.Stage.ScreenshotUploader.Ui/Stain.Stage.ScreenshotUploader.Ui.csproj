@@ -18,10 +18,10 @@
         <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.0.2" />
         <PackageReference Include="Prism.Core" Version="8.1.97" />
         <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
-        <PackageReference Include="Prism.Wpf" Version="8.1.97" />
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include=".\..\Stain.Stage.ScreenshotUploader.ModuleServices\Stain.Stage.ScreenshotUploader.ModuleServices.csproj" />
         <ProjectReference Include=".\..\Stain.Stage.ScreenshotUploader.Screenshot\Stain.Stage.ScreenshotUploader.Screenshot.csproj" />
         <ProjectReference Include=".\..\Stain.Stage.ScreenshotUploader.Uploader\Stain.Stage.ScreenshotUploader.Uploader.csproj" />
     </ItemGroup>

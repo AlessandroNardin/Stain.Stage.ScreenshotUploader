@@ -7,6 +7,7 @@ using Stain.Stage.ScreenshotUploader.Screenshot;
 using Stain.Stage.ScreenshotUploader.Ui.Events;
 using Stain.Stage.ScreenshotUploader.Uploader;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
 using System.Windows;
