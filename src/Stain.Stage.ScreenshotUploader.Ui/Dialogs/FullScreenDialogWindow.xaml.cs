@@ -1,4 +1,5 @@
 using Prism.Services.Dialogs;
+using System;
 using System.Windows;
 
 namespace Stain.Stage.ScreenshotUploader.Ui.Dialogs {
@@ -7,7 +8,11 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Dialogs {
     /// </summary>
     public partial class FullScreenDialogWindow : Window, IDialogWindow{
         //The constructor  of the windows which  will contain the dialogs.
+        
+
+
         public FullScreenDialogWindow() {
+            DataContext = this;
             InitializeComponent();
             WindowState = WindowState.Maximized;
             Activate();

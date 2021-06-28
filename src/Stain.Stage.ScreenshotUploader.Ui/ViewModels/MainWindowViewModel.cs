@@ -75,17 +75,24 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             _eventAggregator.GetEvent<ScreenshotProcedureStarted>().Publish();
             Thread.Sleep(250);
 
+            imageBitmap = Screenshot.Screenshot.Capture();
+            string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
+            imageBitmap.Save(tempPath);
+            ImagePath = tempPath;
+            var param = new DialogParameters();
+            param.Add("path", ImagePath);
+
             // Shows the dialog and allows the user to select a portion of the screen, than savesthe result of the dialog inside to point structs
             Point topLeftPoint = new Point();
             Point bottomLeftPoint = new Point();
-            _dialogService.ShowDialog("CaptureDialog", result => {
+            _dialogService.ShowDialog("CaptureDialog",param , result => {
                 topLeftPoint = result.Parameters.GetValue<Point>("topLeftPoint");
                 bottomLeftPoint = result.Parameters.GetValue<Point>("bottomRightPoint");
             });
 
             // Takes the screenshot of the portion of the scren specified by the user
             imageBitmap = Screenshot.Screenshot.CapturePortion(topLeftPoint,bottomLeftPoint);
-            string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
+            tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
             imageBitmap.Save(tempPath);
             ImagePath = tempPath;
 

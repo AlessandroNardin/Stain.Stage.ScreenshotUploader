@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Stain.Stage.ScreenshotUploader.Ui.Dialogs"
         mc:Ignorable="d"
-        Title="FullScreenDialogWindow" Height="450" Width="800"
+        Title="FullScreenDialogWindow"
         WindowStyle="None"
         AllowsTransparency="True"
+        
         >
     <Window.Background>
         <SolidColorBrush Color="White" Opacity="0.01"/>
