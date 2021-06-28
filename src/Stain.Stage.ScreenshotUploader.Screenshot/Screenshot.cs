@@ -1,6 +1,8 @@
 using System;
 using System.Drawing;
 using System.Windows;
+using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
 
 namespace Stain.Stage.ScreenshotUploader.Screenshot {
     /// <summary>
@@ -37,7 +39,7 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
         /// </summary>
         /// <param name="upperLeftCorner">Upper left corner of the part of the screen to capture.</param>
         /// <param name="bottomRightCorner">Bottom right corner of the part of the screen to capture.</param>
-        public static Bitmap Capture(Point upperLeftCorner, Point bottomRightCorner) {
+        public static Bitmap CapturePortion(Point upperLeftCorner, Point bottomRightCorner) {
             // Creates the default point necessary to determine the starting point on the destination image.
             Point imageDestinationPoint = new Point(0, 0);
 
@@ -53,7 +55,7 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
 
 #if DEBUG
             string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{Guid.NewGuid()}.png");
-            screenshot.Save(@path);            
+            screenshot.Save(@path);
 #endif
             return screenshot;
         }
