@@ -11,7 +11,10 @@ using Point = System.Drawing.Point;
 namespace Stain.Stage.ScreenshotUploader.Ui.Dialogs {
     class CaptureDialogViewModel : BindableBase, IDialogAware {
         // An attribute rappresenting the top left point of the screen section to capture
-        private Point _topLeftPoint;
+        
+
+        private Point _maxPoint;
+        private Point _minPoint;
 
         public int Width { get; set; } = Convert.ToInt32(SystemParameters.PrimaryScreenWidth);
         public int Height { get; set; } = Convert.ToInt32(SystemParameters.PrimaryScreenHeight);
@@ -22,8 +25,6 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Dialogs {
             set { SetProperty(ref _margins, value); }
         }
 
-        private int _originX;
-        private int _originY;
         private string _imagePath;
         public string ImagePath {
             get { return _imagePath; }
@@ -32,16 +33,17 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Dialogs {
 
         private IEventAggregator _eventAggregator;
 
-        public Point TopLeftPoint {
-            get { return _topLeftPoint; }
-            set { SetProperty(ref _topLeftPoint, value); }
+        private Point _firstPoint;
+        public Point FirstPoint {
+            get { return _firstPoint; }
+            set { SetProperty(ref _firstPoint, value); }
         }
 
         // An attribute rappresenting the top left point of the screen section to capture
-        private Point _bottomRightPoint;
-        public Point BottomRightPoint {
-            get { return _bottomRightPoint; }
-            set { SetProperty(ref _bottomRightPoint, value); }
+        private Point _secondPoint;
+        public Point SecondPoint {
+            get { return _secondPoint; }
+            set { SetProperty(ref _secondPoint, value); }
         }
 
         //The delegate command binded to the button in the dialog
@@ -49,39 +51,52 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Dialogs {
 
         public CaptureDialogViewModel(IEventAggregator eventAggregator) {
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<MouseUp>().Subscribe(DetermineOriginPoint);
-            _eventAggregator.GetEvent<MouseDown>().Subscribe(DeterminePoints);
-            _eventAggregator.GetEvent<MouseMoved>().Subscribe(DetermineOtherPoint);
-            TopLeftPoint = new Point();
-            BottomRightPoint = new Point();
-            PointsCommand = new DelegateCommand(DeterminePoints);
+            _eventAggregator.GetEvent<MouseUp>().Subscribe(DetermineFirstPoint);
+            _eventAggregator.GetEvent<MouseDown>().Subscribe(DetermineSecondPoint);
+            _eventAggregator.GetEvent<MouseMoved>().Subscribe(MoveRectangle);
+            FirstPoint = new Point();
+            SecondPoint = new Point();
+            PointsCommand = new DelegateCommand(DetermineSecondPoint);
         }
 
-        private bool originSetted = false;
+        private bool firstPointSetted = false;
 
-        private void DetermineOtherPoint() {
-            if(originSetted) {
-                Margins = $"{_originX},{_originY},{Convert.ToInt32(SystemParameters.PrimaryScreenWidth) - Cursor.Position.X},{Convert.ToInt32(SystemParameters.PrimaryScreenHeight) - Cursor.Position.Y}";
-            } else {
-                Margins = $"{Cursor.Position.X},{Cursor.Position.Y},{Convert.ToInt32(SystemParameters.PrimaryScreenWidth) - Cursor.Position.X},{Convert.ToInt32(SystemParameters.PrimaryScreenHeight) - Cursor.Position.Y}";
+        private void MoveRectangle() {
+            int marginLeft = Cursor.Position.X;
+            int marginRight = Convert.ToInt32(SystemParameters.PrimaryScreenWidth) - marginLeft;
+            int marginUp = Cursor.Position.Y;
+            int marginDown = Convert.ToInt32(SystemParameters.PrimaryScreenHeight) - marginRight;
+            if(firstPointSetted) {
+                if(FirstPoint.X > Cursor.Position.X) {
+                    marginLeft = Cursor.Position.X;
+                    marginRight = Convert.ToInt32(SystemParameters.PrimaryScreenWidth) - FirstPoint.X;
+                } else {
+                    marginLeft = FirstPoint.X;
+                    marginRight = Convert.ToInt32(SystemParameters.PrimaryScreenWidth) - Cursor.Position.X;
+                }
+
+                if(FirstPoint.Y > Cursor.Position.Y) {
+                    marginUp = Cursor.Position.Y;
+                    marginDown = Convert.ToInt32(SystemParameters.PrimaryScreenHeight) - FirstPoint.Y;
+                } else {
+                    marginUp = FirstPoint.Y;
+                    marginDown = Convert.ToInt32(SystemParameters.PrimaryScreenHeight) - Cursor.Position.Y;
+                }
             }
+            Margins = $"{marginLeft},{marginUp},{marginRight},{marginDown}";
+        }
 
-            }
-
-        private void DetermineOriginPoint() {
-            Margins = $"{Cursor.Position.X},{Cursor.Position.Y},{Convert.ToInt32(SystemParameters.PrimaryScreenWidth) - Cursor.Position.X},{Convert.ToInt32(SystemParameters.PrimaryScreenHeight) - Cursor.Position.Y}";
-            _originX = Cursor.Position.X;
-            _originY = Cursor.Position.Y;
-            TopLeftPoint = Cursor.Position;
-            originSetted = true;
+        private void DetermineFirstPoint() {
+            FirstPoint = Cursor.Position;
+            firstPointSetted = true;
         }
 
         // The method called when the user clicks on the dialog.
         // The first time the user clicks the position of the mouse gets stored in type Point struct.
         // The second time the user clicks the position of the mouse gets stored in another type Point struct, the iteration parameters gets setted to zero and the dialog gets closed
-        private void DeterminePoints() {
-                    BottomRightPoint = Cursor.Position;
-                    CloseDialog();
+        private void DetermineSecondPoint() {
+            SecondPoint = Cursor.Position;
+            CloseDialog();
         }
 
         public string Title => "Capture Dialog";
@@ -103,9 +118,25 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Dialogs {
 
             //When the dialog gets closed it returns the two points as its result.
         public void CloseDialog() {
-                var parameters = new DialogParameters();
-                parameters.Add("topLeftPoint", TopLeftPoint);
-                parameters.Add("bottomRightPoint", BottomRightPoint);
+                if(FirstPoint.X > SecondPoint.X) {
+                    _maxPoint.X = FirstPoint.X;
+                    _minPoint.X = SecondPoint.X;
+                } else {
+                    _maxPoint.X = SecondPoint.X;
+                    _minPoint.X = FirstPoint.X;
+                }
+
+                if(FirstPoint.Y > SecondPoint.Y) {
+                    _maxPoint.Y = FirstPoint.Y;
+                    _minPoint.Y = SecondPoint.Y;
+                } else {
+                    _maxPoint.Y = SecondPoint.Y;
+                    _minPoint.Y = FirstPoint.Y;
+                }
+
+            var parameters = new DialogParameters();
+                parameters.Add("topLeftPoint", _minPoint);
+                parameters.Add("bottomRightPoint", _maxPoint);
                 var result = new Prism.Services.Dialogs.DialogResult(ButtonResult.OK, parameters);
                 RequestClose?.Invoke(result);
         }
