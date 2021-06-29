@@ -4,8 +4,10 @@ using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using Stain.Stage.ScreenshotUploader.Ui.Events;
 using System;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Media.Imaging;
 using Point = System.Drawing.Point;
 
 namespace Stain.Stage.ScreenshotUploader.Ui.Dialogs {
@@ -25,10 +27,45 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Dialogs {
             set { SetProperty(ref _margins, value); }
         }
 
-        private string _imagePath;
-        public string ImagePath {
-            get { return _imagePath; }
-            set { SetProperty(ref _imagePath, value); }
+        private Bitmap _baseImage;
+        public Bitmap BaseImage {
+            get { return _baseImage; }
+            set {
+                SetProperty(ref _baseImage, value);
+                FilteredImage = new Bitmap(value);
+            }
+        }
+
+        private Bitmap _filtered;
+        public Bitmap FilteredImage {
+            get { return _filtered; }
+            set { SetProperty(ref _filtered, value); }
+        }
+
+        private BitmapSource _background;
+        public BitmapSource Background {
+            get { return _background; }
+            set { SetProperty(ref _background, value); }
+        }
+
+        private void setBackground(Bitmap image) {
+            Background = ConvertToBitmapSource(image);
+        }
+
+        public static BitmapSource ConvertToBitmapSource(Bitmap bitmap) {
+            var bitmapData = bitmap.LockBits(
+                new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmap.PixelFormat);
+
+            var bitmapSource = BitmapSource.Create(
+                bitmapData.Width, bitmapData.Height,
+                bitmap.HorizontalResolution, bitmap.VerticalResolution,
+                System.Windows.Media.PixelFormats.Pbgra32, null,
+                bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
+
+            bitmap.UnlockBits(bitmapData);
+
+            return bitmapSource;
         }
 
         private IEventAggregator _eventAggregator;
@@ -61,15 +98,19 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Dialogs {
 
         private bool firstPointSetted = false;
 
+
+        private Brush brush = new SolidBrush(Color.FromArgb(150, Color.Black));
+
         private void MoveRectangle() {
             int marginLeft = Cursor.Position.X;
             int marginRight = Convert.ToInt32(SystemParameters.PrimaryScreenWidth) - marginLeft;
             int marginUp = Cursor.Position.Y;
-            int marginDown = Convert.ToInt32(SystemParameters.PrimaryScreenHeight) - marginRight;
+            int marginDown = Convert.ToInt32(SystemParameters.PrimaryScreenHeight) - marginUp;
             if(firstPointSetted) {
                 if(FirstPoint.X > Cursor.Position.X) {
                     marginLeft = Cursor.Position.X;
                     marginRight = Convert.ToInt32(SystemParameters.PrimaryScreenWidth) - FirstPoint.X;
+
                 } else {
                     marginLeft = FirstPoint.X;
                     marginRight = Convert.ToInt32(SystemParameters.PrimaryScreenWidth) - Cursor.Position.X;
@@ -82,8 +123,29 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Dialogs {
                     marginUp = FirstPoint.Y;
                     marginDown = Convert.ToInt32(SystemParameters.PrimaryScreenHeight) - Cursor.Position.Y;
                 }
+
+                Rectangle rectLeft = new Rectangle(0, marginUp, marginLeft, Convert.ToInt32(SystemParameters.PrimaryScreenHeight)-marginDown - marginUp);
+                Rectangle rectUp = new Rectangle(0, 0, Convert.ToInt32(SystemParameters.PrimaryScreenWidth), marginUp);
+                Rectangle rectRight = new Rectangle(Convert.ToInt32(SystemParameters.PrimaryScreenWidth) - marginRight, marginUp, marginRight, Convert.ToInt32(SystemParameters.PrimaryScreenHeight) - marginDown - marginUp);
+                Rectangle rectDown = new Rectangle(0, Convert.ToInt32(SystemParameters.PrimaryScreenHeight) - marginDown, Convert.ToInt32(SystemParameters.PrimaryScreenWidth), marginDown);
+
+                Rectangle srcRegion = new Rectangle(0, 0, Convert.ToInt32(SystemParameters.PrimaryScreenWidth), Convert.ToInt32(SystemParameters.PrimaryScreenHeight));
+                using(Graphics grD = Graphics.FromImage(FilteredImage)) {
+                        grD.DrawImage(BaseImage, srcRegion, srcRegion, GraphicsUnit.Pixel);
+                }
+
+                Graphics gr = Graphics.FromImage(FilteredImage);
+                gr.FillRectangle(brush, rectLeft);
+                gr.FillRectangle(brush, rectUp);
+                gr.FillRectangle(brush, rectRight);
+                gr.FillRectangle(brush, rectDown);
+
+               setBackground(FilteredImage);
+
             }
             Margins = $"{marginLeft},{marginUp},{marginRight},{marginDown}";
+
+            
         }
 
         private void DetermineFirstPoint() {
@@ -112,7 +174,13 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Dialogs {
         public void OnDialogClosed() {
         }
         public void OnDialogOpened(IDialogParameters parameters) {
-            ImagePath = parameters.GetValue<string>("path");
+            BaseImage = parameters.GetValue<Bitmap>("image");
+
+            Rectangle rect = new Rectangle(0, 0, BaseImage.Width, BaseImage.Height);
+            Graphics gr = Graphics.FromImage(FilteredImage);
+            gr.FillRectangle(brush, rect);
+
+            setBackground(FilteredImage);
         }
 
 
