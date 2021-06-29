@@ -64,7 +64,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
 
             _dialogService = dialogService;
             _eventAggregator = eventAggregator;
-            _eventAggregator.GetEvent<ClickOnIcon>().Subscribe(NewScreenshot);
+            _eventAggregator.GetEvent<ClickOnIcon>().Subscribe(OnClickOnIcon);
 
             NewScreenshotCommand = new DelegateCommand(NewScreenshot);
             NewWindowedScreenshotCommand = new DelegateCommand(NewWindowedScreenshot);
@@ -74,8 +74,21 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             OpenCommand = new DelegateCommand(Open, IsUploaded).ObservesProperty(() => Uploaded);
         }
 
-        // The method that allows to set the preview;
-        private void SetPreview(Bitmap image) {
+        private void OnClickOnIcon(string obj) {
+            if(obj == "open") {
+                _eventAggregator.GetEvent<OpenWindow>().Publish();
+            }
+            if(obj == "newWindowedScreenshot") {
+                NewWindowedScreenshot();
+            }
+            if(obj == "newScreenshot") {
+                NewScreenshot();
+            }
+        }
+
+
+            // The method that allows to set the preview;
+            private void SetPreview(Bitmap image) {
             var bitmapData = image.LockBits(
                 new Rectangle(0, 0, image.Width, image.Height),
                 System.Drawing.Imaging.ImageLockMode.ReadOnly, image.PixelFormat);
@@ -169,7 +182,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             ScreenshotNotification.ShowNotificationWithImageAndTwoButtons("Screenshot captured","edit",imageBitmap,"Edit with Paint","edit","Upload","upload");
 
             // Publish the event that communicates the end of the screenshot procedure
-            _eventAggregator.GetEvent<ScreenshotProcedureEnded>().Publish();
+            //_eventAggregator.GetEvent<ScreenshotProcedureEnded>().Publish();
 
             //Updates the Screenshotted property
             Screenshotted = true;

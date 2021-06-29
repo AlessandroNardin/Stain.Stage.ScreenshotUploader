@@ -10,20 +10,10 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Views {
     public partial class MainWindowView {
         public MainWindowView(IEventAggregator eventAggregator) {           
             eventAggregator.GetEvent<ScreenshotProcedureStarted>().Subscribe(OnScreenshotProcedureStarted);
-            eventAggregator.GetEvent<ScreenshotProcedureEnded>().Subscribe(OnScreenshotProcedureEnded);
+            eventAggregator.GetEvent<ScreenshotProcedureEnded>().Subscribe(OnOpenWindow);
+            eventAggregator.GetEvent<OpenWindow>().Subscribe(OnOpenWindow);
             InitializeComponent();
-            System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
-            ni.Icon = new System.Drawing.Icon(@"..\..\..\Icona.ico");
-            ni.Visible = true;
-            ni.Click +=
-                delegate (object sender, EventArgs args) {
-                    eventAggregator.GetEvent<ClickOnIcon>().Publish();
-                };
-            ni.DoubleClick +=
-                delegate (object sender, EventArgs args) {
-                    Show();
-                    WindowState = WindowState.Normal;
-                };
+            IconTrayMenuView ni = new IconTrayMenuView(eventAggregator);
         }
 
         protected override void OnStateChanged(EventArgs e) {
@@ -36,8 +26,11 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Views {
         private void OnScreenshotProcedureStarted() {
             WindowState = WindowState.Minimized;
         }
-        private void OnScreenshotProcedureEnded() {
+        private void OnOpenWindow() {
+            Show();
             WindowState = WindowState.Normal;
+            Activate();
+            Focus();
         }
     }
 }
