@@ -11,15 +11,22 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using Point = System.Drawing.Point;
 
 namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
     public class MainWindowViewModel : BindableBase{
         private static Bitmap imageBitmap;
 
+        private BitmapSource _preview;
+        public BitmapSource Preview {
+            get { return _preview; }
+            set { SetProperty(ref _preview, value); }
+        }
+
         private IEventAggregator _eventAggregator;
 
-        private IDialogService _dialogService;
+        private IDialogService _dialogService;       
 
         // The definition of the delegate Commands binded to diffren buttons in the view
         public DelegateCommand NewScreenshotCommand { get; private set; }
@@ -28,13 +35,6 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
         public DelegateCommand UploadCommand { get; private set; }
         public DelegateCommand CopyCommand { get; private set; }
         public DelegateCommand OpenCommand { get; private set; }
-    
-        // Contains the path to the last  
-        private string _imagePath = @"C:\Users\utente.elettrico.STAIN\source\repos\Stain.Stage.ScreenshotUploader\src\Stain.Stage.ScreenshotUploader.Ui\Default.png";
-        public string ImagePath {
-            get { return _imagePath; }
-            set { SetProperty(ref _imagePath, value); }
-        }
 
         // Contains the link to the uploaded image
         private string _link;
@@ -57,17 +57,38 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             set { SetProperty(ref _uploaded, value); }
         }
 
+        // Constructor
         public MainWindowViewModel(IEventAggregator eventAggregator, IDialogService dialogService) {
             ToastNotificationManagerCompat.OnActivated += OnOpenedFromNotification;
+            SetPreview(new Bitmap(@"C:\Users\utente.elettrico.STAIN\source\repos\Stain.Stage.ScreenshotUploader\src\Stain.Stage.ScreenshotUploader.Ui\Default.png"));
+
             _dialogService = dialogService;
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ClickOnIcon>().Subscribe(NewScreenshot);
+
             NewScreenshotCommand = new DelegateCommand(NewScreenshot);
             NewWindowedScreenshotCommand = new DelegateCommand(NewWindowedScreenshot);
             EditCommand = new DelegateCommand(Edit, IsScreenshotted).ObservesProperty(() => Screenshotted);
             UploadCommand = new DelegateCommand(Upload, IsScreenshotted).ObservesProperty(() => Screenshotted);
             CopyCommand = new DelegateCommand(Copy, IsUploaded).ObservesProperty(()=> Uploaded);
             OpenCommand = new DelegateCommand(Open, IsUploaded).ObservesProperty(() => Uploaded);
+        }
+
+        // The method that allows to set the preview;
+        private void SetPreview(Bitmap image) {
+            var bitmapData = image.LockBits(
+                new Rectangle(0, 0, image.Width, image.Height),
+                System.Drawing.Imaging.ImageLockMode.ReadOnly, image.PixelFormat);
+
+            var bitmapSource = BitmapSource.Create(
+                bitmapData.Width, bitmapData.Height,
+                image.HorizontalResolution, image.VerticalResolution,
+                System.Windows.Media.PixelFormats.Pbgra32, null,
+                bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
+
+            image.UnlockBits(bitmapData);
+
+            Preview = bitmapSource;
         }
 
         //The Method that takes allows the user to take a screenshot of a portion of the screen
@@ -88,12 +109,10 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
 
             // Takes the screenshot of the portion of the scren specified by the user
             imageBitmap = Screenshot.Screenshot.CapturePortion(topLeftPoint,bottomLeftPoint);
-            string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
-            imageBitmap.Save(tempPath);
-            ImagePath = tempPath;
+            SetPreview(imageBitmap);
 
             // Notifies that the screenshot has ben taken
-            ScreenshotNotification.ShowNotificationWithImageAndTwoButtons("Screenshot captured", "edit", ImagePath, "Edit with Paint", "edit", "Upload", "upload");
+            ScreenshotNotification.ShowNotificationWithImageAndTwoButtons("Screenshot captured", "edit", imageBitmap, "Edit with Paint", "edit", "Upload", "upload");
 
             // Publish the event that communicates the end of the screenshot procedure
             _eventAggregator.GetEvent<ScreenshotProcedureEnded>().Publish();
@@ -106,6 +125,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
         private bool IsUploaded() {
             return Uploaded;
         }
+
         private bool IsScreenshotted() {
             return Screenshotted;
         }
@@ -133,9 +153,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
         private void Edit() {
             imageBitmap = ImageEditor.PaintEdit(imageBitmap);
 
-            string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
-            imageBitmap.Save(tempPath);
-            ImagePath = tempPath;
+            SetPreview(imageBitmap);
         }
 
         // Takes a screenshot of the entire screen
@@ -145,13 +163,10 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             Thread.Sleep(250);
             imageBitmap = Screenshot.Screenshot.Capture();
 
-            imageBitmap = Screenshot.Screenshot.Capture();
-            string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
-            imageBitmap.Save(tempPath);
-            ImagePath = tempPath;
+            SetPreview(imageBitmap);
 
             // Notifies that the screenshot has ben taken
-            ScreenshotNotification.ShowNotificationWithImageAndTwoButtons("Screenshot captured","edit",ImagePath,"Edit with Paint","edit","Upload","upload");
+            ScreenshotNotification.ShowNotificationWithImageAndTwoButtons("Screenshot captured","edit",imageBitmap,"Edit with Paint","edit","Upload","upload");
 
             // Publish the event that communicates the end of the screenshot procedure
             _eventAggregator.GetEvent<ScreenshotProcedureEnded>().Publish();
@@ -166,22 +181,17 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
 
             // Checks the content of the argument
             if(args.Contains("upload")) {
-                // If the argument contains the "upload" term the UploadImage method is called.
-                UploadData data;
-                UploadFile.Instance.TryUploadImage(imageBitmap, out data);
-                UploadedScreenshotLink = data.Link;
-
+                // If the argument contains the "upload" term the Upload method is called.
+                Upload();
+                // Opens the browser at the address where the image has been uploaded.
                 System.Diagnostics.Process.Start(this.UploadedScreenshotLink);
             } else if(args.Contains("discard")) {
                 // If the argument contains the "discard" term does nothing.
             } else {
                 // Otherwise the Edit method is called.
-                imageBitmap = ImageEditor.PaintEdit(imageBitmap);
-
-                string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{Guid.NewGuid()}.png");
-                imageBitmap.Save(tempPath);
-                ImagePath = tempPath;
-                ScreenshotNotification.ShowNotificationWithImageAndTwoButtons("Image Modified", "", ImagePath, "Discard", "discard", "Upload", "upload");
+                Edit();
+                // Shows the 
+                ScreenshotNotification.ShowNotificationWithImageAndTwoButtons("Image Modified", "edit", imageBitmap, "Discard", "discard", "Upload", "upload");
             }
         }
 

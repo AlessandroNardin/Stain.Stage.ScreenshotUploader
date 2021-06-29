@@ -21,14 +21,14 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Views {
                 };
             ni.DoubleClick +=
                 delegate (object sender, EventArgs args) {
-                    this.Show();
-                    this.WindowState = WindowState.Normal;
+                    Show();
+                    WindowState = WindowState.Normal;
                 };
         }
 
         protected override void OnStateChanged(EventArgs e) {
-            if(WindowState == System.Windows.WindowState.Minimized)
-                this.Hide();
+            if(WindowState == WindowState.Minimized)
+                Hide();
 
             base.OnStateChanged(e);
         }
