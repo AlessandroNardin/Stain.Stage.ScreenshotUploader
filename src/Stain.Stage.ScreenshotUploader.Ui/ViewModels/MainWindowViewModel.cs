@@ -60,7 +60,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
         // Constructor
         public MainWindowViewModel(IEventAggregator eventAggregator, IDialogService dialogService) {
             ToastNotificationManagerCompat.OnActivated += OnOpenedFromNotification;
-            SetPreview(new Bitmap(@"C:\Users\utente.elettrico.STAIN\source\repos\Stain.Stage.ScreenshotUploader\src\Stain.Stage.ScreenshotUploader.Ui\Default.png"));
+            SetPreview(new Bitmap(@"..\..\..\Default.png"));
 
             _dialogService = dialogService;
             _eventAggregator = eventAggregator;
