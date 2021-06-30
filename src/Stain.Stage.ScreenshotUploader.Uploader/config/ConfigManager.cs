@@ -15,7 +15,7 @@ namespace Stain.Stage.ScreenshotUploader.Uploader.config {
 
         public void Load() {
             IniData data = new FileIniDataParser().ReadFile(Path);
-            Config = new Config(data["IMGUR_API"]["CLIENT_ID"]);
+            Config = new Config(data["IMGUR_API"]["CLIENT_ID"],data["WEBHOOK_URL"]["URL"]);
         }
 
         public void Save() {
