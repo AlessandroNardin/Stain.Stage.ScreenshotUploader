@@ -105,11 +105,10 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
 
 
             // The method that allows to set the preview;
-            private void SetPreview(Bitmap image) {
+        private void SetPreview(Bitmap image) {
             var bitmapData = image.LockBits(
                 new Rectangle(0, 0, image.Width, image.Height),
                 System.Drawing.Imaging.ImageLockMode.ReadOnly, image.PixelFormat);
-
             var bitmapSource = BitmapSource.Create(
                 bitmapData.Width, bitmapData.Height,
                 image.HorizontalResolution, image.VerticalResolution,
@@ -144,12 +143,11 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             // Notifies that the screenshot has ben taken
             ScreenshotNotification.ShowNotificationWithImageAndTwoButtons("Screenshot captured", "edit", imageBitmap, "Edit with Paint", "edit", "Upload", "upload");
 
-            // Publish the event that communicates the end of the screenshot procedure
-            _eventAggregator.GetEvent<ScreenshotProcedureEnded>().Publish();
-
             //Updates the Screenshotted property
             Screenshotted = true;
         }
+
+ 
 
         // Methods that returns the "Is" Properties
         private bool IsUploaded() {
