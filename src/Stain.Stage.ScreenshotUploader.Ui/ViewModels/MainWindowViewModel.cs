@@ -74,37 +74,16 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             OpenCommand = new DelegateCommand(Open, IsUploaded).ObservesProperty(() => Uploaded);
         }
 
-        private void NewWindowedScreenshotWithEvent() {
-            NewWindowedScreenshot();
-
-            // Publish the event that communicates the end of the screenshot procedure
-            _eventAggregator.GetEvent<ScreenshotProcedureEnded>().Publish();
+        // Methods that returns the "Is" Properties
+        private bool IsUploaded() {
+            return Uploaded;
         }
 
-        private void NewScreenshotWithEvent() {
-            NewScreenshot();
-
-            // Publish the event that communicates the end of the screenshot procedure
-            _eventAggregator.GetEvent<ScreenshotProcedureEnded>().Publish();
+        private bool IsScreenshotted() {
+            return Screenshotted;
         }
 
-        private void OnClickOnIcon(string obj) {
-            if(obj == "open") {
-                _eventAggregator.GetEvent<OpenWindow>().Publish();
-            }
-            if(obj == "newWindowedScreenshot") {
-                NewWindowedScreenshot();
-            }
-            if(obj == "newScreenshot") {
-                NewScreenshot();
-            }
-            if(obj == "close") {
-                Environment.Exit(0);
-            }
-        }
-
-
-            // The method that allows to set the preview;
+        // The method that allows to set the preview;
         private void SetPreview(Bitmap image) {
             var bitmapData = image.LockBits(
                 new Rectangle(0, 0, image.Width, image.Height),
@@ -147,15 +126,34 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             Screenshotted = true;
         }
 
- 
+        private void NewWindowedScreenshotWithEvent() {
+            NewWindowedScreenshot();
 
-        // Methods that returns the "Is" Properties
-        private bool IsUploaded() {
-            return Uploaded;
+            // Publish the event that communicates the end of the screenshot procedure
+            _eventAggregator.GetEvent<ScreenshotProcedureEnded>().Publish();
         }
 
-        private bool IsScreenshotted() {
-            return Screenshotted;
+        // Takes a screenshot of the entire screen
+        private void NewScreenshot() {
+            // Publish the event that communicates the start of the screenshot procedure
+            _eventAggregator.GetEvent<ScreenshotProcedureStarted>().Publish();
+            Thread.Sleep(250);
+            imageBitmap = Screenshot.Screenshot.Capture();
+
+            SetPreview(imageBitmap);
+
+            // Notifies that the screenshot has ben taken
+            ScreenshotNotification.ShowNotificationWithImageAndTwoButtons("Screenshot captured","edit",imageBitmap,"Edit with Paint","edit","Upload","upload");
+
+            //Updates the Screenshotted property
+            Screenshotted = true;
+        }
+
+        private void NewScreenshotWithEvent() {
+            NewScreenshot();
+
+            // Publish the event that communicates the end of the screenshot procedure
+            _eventAggregator.GetEvent<ScreenshotProcedureEnded>().Publish();
         }
 
         //Opens the link where the image has been uploaded
@@ -184,23 +182,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             SetPreview(imageBitmap);
         }
 
-        // Takes a screenshot of the entire screen
-        private void NewScreenshot() {
-            // Publish the event that communicates the start of the screenshot procedure
-            _eventAggregator.GetEvent<ScreenshotProcedureStarted>().Publish();
-            Thread.Sleep(250);
-            imageBitmap = Screenshot.Screenshot.Capture();
-
-            SetPreview(imageBitmap);
-
-            // Notifies that the screenshot has ben taken
-            ScreenshotNotification.ShowNotificationWithImageAndTwoButtons("Screenshot captured","edit",imageBitmap,"Edit with Paint","edit","Upload","upload");
-
-            //Updates the Screenshotted property
-            Screenshotted = true;
-        }
-
-        // Gets thrown when the user clicks on a notification 
+        // Handles the events published when the user clicks on a toast notification. 
         private void OnOpenedFromNotification(ToastNotificationActivatedEventArgsCompat e) {
             ToastArguments args = ToastArguments.Parse(e.Argument);
 
@@ -217,6 +199,22 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
                 Edit();
                 // Shows the 
                 ScreenshotNotification.ShowNotificationWithImageAndTwoButtons("Image Modified", "edit", imageBitmap, "Discard", "discard", "Upload", "upload");
+            }
+        }
+
+        // Handles the events published by the system tray icon.
+        private void OnClickOnIcon(string obj) {
+            if(obj == "open") {
+                _eventAggregator.GetEvent<OpenWindow>().Publish();
+            }
+            if(obj == "newWindowedScreenshot") {
+                NewWindowedScreenshot();
+            }
+            if(obj == "newScreenshot") {
+                NewScreenshot();
+            }
+            if(obj == "close") {
+                Environment.Exit(0);
             }
         }
 
