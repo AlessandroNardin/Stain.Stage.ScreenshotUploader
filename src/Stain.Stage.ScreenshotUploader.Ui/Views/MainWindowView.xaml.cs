@@ -82,7 +82,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Views {
 
             // The Icon property sets the icon that will appear
             // in the systray for this application.
-            notifyIcon.Icon = new Icon(@"..\..\..\Icona.ico");
+            notifyIcon.Icon = new Icon(@"..\..\..\Icon.ico");
 
             // The ContextMenu property sets the menu that will
             // appear when the systray icon is right clicked.
