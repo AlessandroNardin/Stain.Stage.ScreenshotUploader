@@ -66,12 +66,26 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<ClickOnIcon>().Subscribe(OnClickOnIcon);
 
-            NewScreenshotCommand = new DelegateCommand(NewScreenshot);
-            NewWindowedScreenshotCommand = new DelegateCommand(NewWindowedScreenshot);
+            NewScreenshotCommand = new DelegateCommand(NewScreenshotWithEvent);
+            NewWindowedScreenshotCommand = new DelegateCommand(NewWindowedScreenshotWithEvent);
             EditCommand = new DelegateCommand(Edit, IsScreenshotted).ObservesProperty(() => Screenshotted);
             UploadCommand = new DelegateCommand(Upload, IsScreenshotted).ObservesProperty(() => Screenshotted);
             CopyCommand = new DelegateCommand(Copy, IsUploaded).ObservesProperty(()=> Uploaded);
             OpenCommand = new DelegateCommand(Open, IsUploaded).ObservesProperty(() => Uploaded);
+        }
+
+        private void NewWindowedScreenshotWithEvent() {
+            NewWindowedScreenshot();
+
+            // Publish the event that communicates the end of the screenshot procedure
+            _eventAggregator.GetEvent<ScreenshotProcedureEnded>().Publish();
+        }
+
+        private void NewScreenshotWithEvent() {
+            NewScreenshot();
+
+            // Publish the event that communicates the end of the screenshot procedure
+            _eventAggregator.GetEvent<ScreenshotProcedureEnded>().Publish();
         }
 
         private void OnClickOnIcon(string obj) {
@@ -83,6 +97,9 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             }
             if(obj == "newScreenshot") {
                 NewScreenshot();
+            }
+            if(obj == "close") {
+                Environment.Exit(0);
             }
         }
 
@@ -180,9 +197,6 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
 
             // Notifies that the screenshot has ben taken
             ScreenshotNotification.ShowNotificationWithImageAndTwoButtons("Screenshot captured","edit",imageBitmap,"Edit with Paint","edit","Upload","upload");
-
-            // Publish the event that communicates the end of the screenshot procedure
-            //_eventAggregator.GetEvent<ScreenshotProcedureEnded>().Publish();
 
             //Updates the Screenshotted property
             Screenshotted = true;
