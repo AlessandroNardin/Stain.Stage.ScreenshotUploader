@@ -16,8 +16,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui {
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry) {
             containerRegistry.RegisterDialogWindow<FullScreenDialogWindow>();
-            containerRegistry.RegisterDialog<CaptureDialog>();
-            
+            containerRegistry.RegisterDialog<CaptureDialog>();  
         }
     }
 }

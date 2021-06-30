@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Stain.Stage.ScreenshotUploader.Ui.Events {
-    class ClickOnIcon : PubSubEvent<string>{
-        
+    class OpenWindow : PubSubEvent{
     }
 }

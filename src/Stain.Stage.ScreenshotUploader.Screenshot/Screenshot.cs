@@ -27,10 +27,6 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
             Bitmap screenshot = new Bitmap(sizeWidth,sizeHeigth);
             Graphics graph = Graphics.FromImage(screenshot);
             graph.CopyFromScreen(upperLeftCorner, imageDestinationPoint, dimension);
-#if DEBUG
-            string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{Guid.NewGuid()}.png");
-            screenshot.Save(@path);
-#endif
             return screenshot;
         }
 
@@ -52,13 +48,7 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
             Bitmap screenshot = new Bitmap(sizeWidth, sizeHeigth);
             Graphics graph = Graphics.FromImage(screenshot);
             graph.CopyFromScreen(upperLeftCorner, imageDestinationPoint, dimension);
-
-#if DEBUG
-            string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{Guid.NewGuid()}.png");
-            screenshot.Save(@path);
-#endif
             return screenshot;
         }
-
     }
 }

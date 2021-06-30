@@ -8,7 +8,6 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Dialogs {
     /// </summary>
     public partial class FullScreenDialogWindow : Window, IDialogWindow{
         //The constructor  of the windows which  will contain the dialogs.
-
         public FullScreenDialogWindow() {
             InitializeComponent();
             WindowState = WindowState.Maximized;

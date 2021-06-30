@@ -12,10 +12,9 @@
             >
     <Grid x:Name="grid">
         <Grid.Background>
-            <ImageBrush ImageSource="{Binding ImagePath}"/>
+            <ImageBrush ImageSource="{Binding Background}" />
         </Grid.Background>
-        <Rectangle Margin="{Binding Margins}" Stroke="Red" >
-            
+        <Rectangle Margin="{Binding Margins}" Stroke="Red">
         </Rectangle>
     </Grid>
 </UserControl>
