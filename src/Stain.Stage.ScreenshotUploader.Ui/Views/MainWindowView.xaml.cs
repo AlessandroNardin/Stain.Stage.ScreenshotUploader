@@ -47,7 +47,6 @@ namespace Stain.Stage.ScreenshotUploader.Ui.Views {
         private System.ComponentModel.IContainer components;
 
         public NotifyIcon(IEventAggregator eventAggregator) {
-
             components = new System.ComponentModel.Container();
             menu = new ContextMenu();
             windowedScreenshotItem = new MenuItem();
