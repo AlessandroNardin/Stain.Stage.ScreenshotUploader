@@ -80,14 +80,16 @@
             Margin="1,1,2,2"
         Content="Upload" 
         />
+
         <TextBlock
             Name ="Link"
             Grid.Row="2"
             Grid.Column="0"
             Grid.ColumnSpan="5"
-            Background="White"
+            Background="Gainsboro"
             FontFamily="Segoe UI" Margin="3,1,0,1"
-            Text ="{Binding Path=UploadedScreenshotLink}"/>
+            Text ="{Binding Path=UploadedScreenshotLink}"
+            />
         <Button
             Name="Open"
             Grid.Row="2"
@@ -108,7 +110,6 @@
             Command="{Binding CopyCommand}"
             Margin="1,1,2,1"
             Content="Copy"
-            BorderBrush="Black"
         /> 
 
     </Grid>
