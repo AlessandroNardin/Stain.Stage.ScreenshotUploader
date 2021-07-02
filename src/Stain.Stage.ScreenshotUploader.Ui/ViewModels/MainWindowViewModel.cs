@@ -24,6 +24,11 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
             set { SetProperty(ref _preview, value); }
         }
 
+        private BitmapSource _icon;
+        public BitmapSource Icon {
+            get { return _icon; }
+            set { SetProperty(ref _icon, value); }
+        }
         private IEventAggregator _eventAggregator;
 
         private IDialogService _dialogService;       
@@ -61,6 +66,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
         public MainWindowViewModel(IEventAggregator eventAggregator, IDialogService dialogService) {
             ToastNotificationManagerCompat.OnActivated += OnOpenedFromNotification;
             SetPreview(new Bitmap(@"..\..\..\Default.png"));
+            SetIcon(new Bitmap(@"..\..\..\Icon.ico"));
 
             _dialogService = dialogService;
             _eventAggregator = eventAggregator;
@@ -85,6 +91,16 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
 
         // The method that allows to set the preview;
         private void SetPreview(Bitmap image) {
+            Preview = BitmapToBitmapSource(image);
+        }
+
+        // The method that allows to set the icon;
+        private void SetIcon(Bitmap image) {
+            Icon = BitmapToBitmapSource(image);
+        }
+
+        // The method that allows to set the preview;
+        private BitmapSource BitmapToBitmapSource(Bitmap image) {
             var bitmapData = image.LockBits(
                 new Rectangle(0, 0, image.Width, image.Height),
                 System.Drawing.Imaging.ImageLockMode.ReadOnly, image.PixelFormat);
@@ -96,7 +112,7 @@ namespace Stain.Stage.ScreenshotUploader.Ui.ViewModels {
 
             image.UnlockBits(bitmapData);
 
-            Preview = bitmapSource;
+            return bitmapSource;
         }
 
         //The Method that takes allows the user to take a screenshot of a portion of the screen
