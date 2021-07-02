@@ -6,19 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Stain.Stage.ScreenshotUploader.Uploader.WebHook {
-    public class TextButton {
-        [JsonProperty("text")]
-        public string Text { get; set; }
-        [JsonProperty("onClick")]
-        public OnClick OnClick { get; set; } = new OnClick();
+    public class TextButton : Widget{
+        [JsonProperty("textButton")]
+        public TextButtonProperties button { get; set; }
 
-        public string ToString() {
-            string text = "";
-
-            text += $"Text : {Text}\n";
-            text += OnClick.ToString() + "\n";
-
-            return text;
+        public TextButton(string buttonText,string imageUrl) {
+            button = new TextButtonProperties(buttonText, imageUrl);
         }
     }
 }
