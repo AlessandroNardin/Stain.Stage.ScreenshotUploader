@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Stain.Stage.ScreenshotUploader.Uploader.WebHook {
     public class Section {
         [JsonProperty("widgets")]
-        public Widget[] Widgets { get; set; } = new Widget[1];
+        public Widget[] Widgets { get; set; } = new Widget[2];
 
         public string ToString() {
             string text = "";

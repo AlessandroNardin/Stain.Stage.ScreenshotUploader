@@ -7,15 +7,12 @@ using System.Threading.Tasks;
 
 namespace Stain.Stage.ScreenshotUploader.Uploader.WebHook {
     public class TextButtonProperties {
-        [JsonProperty("text")]
-        public string Text { get; set; }
-        [JsonProperty("onClick")]
-        public OnClick OnClick { get; set; } = new OnClick();
+        [JsonProperty("textButton")]
+
+        public TextButtonObject textButton { get; set; }
 
         public TextButtonProperties(string text, string url) {
-            Text = text;
-            OnClick = new OnClick();
-            OnClick.OpenLink.Url = url;
+            textButton = new TextButtonObject(text, url);
         }
     }
 }
