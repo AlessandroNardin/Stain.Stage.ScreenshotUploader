@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Stain.Stage.ScreenshotUploader.Uploader.WebHook {
     public class Widget {
-        [JsonProperty("textButton")]
-        public TextButton TextButton = new TextButton();
-        [JsonProperty("imageUrl")]
-        public string ImageUrl { get; set; }
+        //[JsonProperty("textButton")]
+        //public TextButton TextButton = new TextButton();
+        [JsonProperty("image")]
+        public Image Image { get; set; } = new Image();
 
-        public string ToString() {
+        /*public string ToString() {
             return $"ImageUrl: {ImageUrl}\n" + TextButton.ToString() + "\n";
-        }
+        }*/
     }
 }
