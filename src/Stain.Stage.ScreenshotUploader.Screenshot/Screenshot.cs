@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows;
+using System.Windows.Forms;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
 
@@ -49,6 +50,8 @@ namespace Stain.Stage.ScreenshotUploader.Screenshot {
             Graphics graph = Graphics.FromImage(screenshot);
             graph.CopyFromScreen(upperLeftCorner, imageDestinationPoint, dimension);
             return screenshot;
+
+            Screen[] screens = Screen.AllScreens;
         }
     }
 }

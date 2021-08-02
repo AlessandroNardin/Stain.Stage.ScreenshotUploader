@@ -13,10 +13,12 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
 
     public class UploadFile {
         public RestClient client;
+        public RestClient clientWebHook;
         public static UploadFile Instance { get; } = new UploadFile();
 
         private UploadFile() {
             client = new RestClient("https://api.imgur.com/3/upload");
+            clientWebHook = new RestClient(config.ConfigManager.Instance.Config.WebHookUrl);
         }
         public string ConvertImageToBase64(Image image) {
             return Convert.ToBase64String(ImageToByteArray(image));
@@ -52,11 +54,10 @@ namespace Stain.Stage.ScreenshotUploader.Uploader {
 
                 Console.WriteLine(stringjson);
 
-                request.RequestFormat = DataFormat.Json;
-                IRestRequest restRequest = new RestRequest(Method.POST);
-                restRequest.AddBody(stringjson);
+                IRestRequest restRequest = new RestRequest(Method.POST);        
+                restRequest.AddJsonBody(stringjson);
 
-                IRestResponse Jsonresponse = client.Execute(restRequest);
+                IRestResponse Jsonresponse = clientWebHook.Execute(restRequest);
 #if DEBUG
                 Console.WriteLine(Jsonresponse.Content);
 #endif

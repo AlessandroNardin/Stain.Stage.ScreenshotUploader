@@ -6,6 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Stain.Stage.ScreenshotUploader.Uploader.WebHook {
-    public class Widget {
+    public class ImageUrl {
+        [JsonProperty("imageUrl")]
+        public string imageUrl;
+
+        public ImageUrl(string imgUrl) {
+            imageUrl = imgUrl;
+        }
     }
 }

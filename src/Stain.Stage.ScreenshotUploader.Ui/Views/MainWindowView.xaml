@@ -9,7 +9,9 @@
         Title="Screenshot Uploader"
         Width="800"
         SizeToContent="Height"
-        Background="Gray">
+        Background="White"
+        Icon="{Binding Icon}"
+        >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -31,18 +33,19 @@
             Grid.Row="0"
             Grid.Column="0"
             Grid.ColumnSpan="3"
-            Background="Gainsboro"
+            Background="White"
             FontFamily="Segoe UI"
             Command="{Binding NewScreenshotCommand}"
             Margin="2,2,2,0"
-            Content="New Screenshot">
-        </Button>
+            Content="New Screenshot"
+            />
+
         <Button
             Name="NewWindowedScreenshot"
             Grid.Row="0"
             Grid.Column="4"
             Grid.ColumnSpan="3"
-            Background="Gainsboro"
+            Background="White"
             FontFamily="Segoe UI"
             Command="{Binding NewWindowedScreenshotCommand}"
             Margin="2,2,2,0"
@@ -60,22 +63,24 @@
             Name="Edit"
             Grid.Row="3"
             Grid.Column="5"
-            Background="Gainsboro"
+            Background="White"
             FontFamily="Segoe UI"
             Command="{Binding EditCommand}"
             Margin="2,1,1,2"
-        >Edit
-        </Button>
+            Content="Edit"
+        />
+
         <Button
             Name="Upload"
             Grid.Row="3"
             Grid.Column="6"
-            Background="Gainsboro"
+            Background="White"
             FontFamily="Segoe UI"
             Command="{Binding UploadCommand}"
             Margin="1,1,2,2"
-        >Upload
-        </Button>
+        Content="Upload" 
+        />
+
         <TextBlock
             Name ="Link"
             Grid.Row="2"
@@ -83,26 +88,29 @@
             Grid.ColumnSpan="5"
             Background="Gainsboro"
             FontFamily="Segoe UI" Margin="3,1,0,1"
-            Text ="{Binding Path=UploadedScreenshotLink}"/>
+            Text ="{Binding Path=UploadedScreenshotLink}"
+            />
         <Button
             Name="Open"
             Grid.Row="2"
             Grid.Column="5"
-            Background="Gainsboro"
+            Background="White"
             FontFamily="Segoe UI"
             Command="{Binding OpenCommand}"
             Margin="2,1,1,1"
-        >Open
-        </Button>
+            Content="Open"
+        />
+
         <Button
             Name="Copy"
             Grid.Row="2"
             Grid.Column="6"
-            Background="Gainsboro"
+            Background="White"
             FontFamily="Segoe UI"
             Command="{Binding CopyCommand}"
             Margin="1,1,2,1"
-        >Copy
-        </Button>
+            Content="Copy"
+        /> 
+
     </Grid>
 </Window>
